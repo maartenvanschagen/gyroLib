@@ -1,4 +1,6 @@
 #include "accel.h"
+
+#include "defines.h"
 #include "I2C.h"
 #include "Quaternion.h"
 #include <cstdio>

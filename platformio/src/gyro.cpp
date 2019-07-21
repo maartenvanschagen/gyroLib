@@ -1,15 +1,18 @@
 #include "gyro.h"
 
-#include <cstdint>
-#include <math.h>
-#include <vector>
-
-#include "FreeRTOS.h"
-#include "freertos/task.h"
-
+#include "defines.h"
 #include "Quaternion.h"
 #include "I2C.h"
 #include "accel.h"
+
+#include <cstdint>
+#include <math.h>
+#ifdef DEBUG_GYROREADBUFFER
+  #include <vector>
+#endif
+
+#include "FreeRTOS.h"
+#include "freertos/task.h"
 
 namespace gyro { 
   short gyroX, gyroY, gyroZ;  //2 bytes (just like the register)

@@ -1,4 +1,7 @@
 #include "Quaternion.h"
+
+#include "defines.h"
+
 #include <cmath>
 
 Quaternion::Quaternion(double wi, double xi, double yi, double zi){
@@ -24,8 +27,8 @@ Quaternion::~Quaternion(){
 
 
 double* Quaternion::getValue(){
-  double tmp[4] = {w, x, y, z};
-  return tmp;
+  double temp[4] = {w, x, y, z};
+  return temp;
 }
 
 void Quaternion::getEuler(double& yaw, double& roll, double& pitch){   //~90 microseconds  ,  euler in XYZ                      ///////////CODE VAN WIKIPEDIA, EULER is niet helemaal correct
