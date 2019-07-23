@@ -3,7 +3,7 @@
 #include "accel.h"
 #include "I2C.h"
 
-#include <FreeRTOS.h>
+#include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
 using namespace std;
@@ -15,7 +15,7 @@ void loop2( void * );
 
 //TODO: put all debugging in its own file
 
-void setup() {
+extern "C" void app_main() {
   I2C::init();
 
   accel::init();

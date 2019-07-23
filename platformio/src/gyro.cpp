@@ -11,7 +11,7 @@
   #include <vector>
 #endif
 
-#include "FreeRTOS.h"
+#include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
 namespace gyro { 
