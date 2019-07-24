@@ -1,0 +1,45 @@
+ #######################################
+# Syntax Coloring Map For GyroLib
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Gyro	KEYWORD1
+Accelerometer	KEYWORD1
+Compass	KEYWORD1
+Quaternion	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+##Gyro
+setTrim	KEYWORD2
+isReady	KEYWORD2
+calcRot	KEYWORD2
+readGyro	KEYWORD2
+gyroLoop	KEYWORD2
+
+##Accelerometer
+accelLoop	KEYWORD2
+#isReady	KEYWORD2
+readAccel	KEYWORD2
+calibrate	KEYWORD2
+#calcRot	KEYWORD2
+
+##Quaternion
+getValue	KEYWORD2
+getEuler	KEYWORD2
+setMagnitude	KEYWORD2
+
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
