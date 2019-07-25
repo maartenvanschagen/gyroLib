@@ -1,2 +1,0 @@
-# The header directory
-This directory contains all the header files for the src directory. Not all headers are meant to be included by the user.
