@@ -1,4 +1,4 @@
-# The test directory
+# The 'test' Directory
 All files found in this directory are intended for developers to test their code. Everything here should be compilable in the ESP-IDF framework. **Don't commit Arduino code**. 
 
 ## How to Use
