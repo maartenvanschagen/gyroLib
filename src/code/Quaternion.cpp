@@ -12,14 +12,8 @@ Quaternion::Quaternion(){
   w = 1; x = 0; y = 0; x = 0;
 }
 
-Quaternion::Quaternion(double g_x, double g_y, double g_z){  //creates quaternion from gyro rotations (euler angles)
-  double cx = cos(g_x/2), cy = cos(g_y/2), cz = cos(g_z/2);
-  double sx = sin(g_x/2), sy = sin(g_y/2), sz = sin(g_z/2);
-
-  w = (cx * cy * cz) - (sx * sy * sz);
-  x = (sx * cy * cz) + (cx * sy * sz);
-  y = (cx * sy * cz) - (sx * cy * sz);
-  z = (sx * sy * cz) + (cx * cy * sz);
+Quaternion::Quaternion(double v_x, double v_y, double v_z){  //creates quaternion from euler angles
+  setEuler(v_x, v_y, v_z);
 }
 
 Quaternion::~Quaternion(){
@@ -27,11 +21,11 @@ Quaternion::~Quaternion(){
 
 
 double* Quaternion::getValue(){
-  double temp[4] = {w, x, y, z};
+  static double temp[4] = {w, x, y, z};
   return temp;
 }
 
-void Quaternion::getEuler(double& yaw, double& roll, double& pitch){   //~90 microseconds  ,  euler in XYZ                      ///////////CODE VAN WIKIPEDIA, EULER is niet helemaal correct
+void Quaternion::getEuler(double& yaw, double& roll, double& pitch){   //~90 microseconds  ,  euler in XYZ     ///Modified version of WIKIPEDIA code
   // roll (x-axis rotation)
   double sinr_cosp = +2.0 * (w * x + y * z);
   double cosr_cosp = +1.0 - 2.0 * (x * x + y * y);
@@ -48,6 +42,16 @@ void Quaternion::getEuler(double& yaw, double& roll, double& pitch){   //~90 mic
   double siny_cosp = +2.0 * (w * z + x * y);
   double cosy_cosp = +1.0 - 2.0 * (y * y + z * z);  
   yaw = atan2(siny_cosp, cosy_cosp);
+}
+
+void Quaternion::setEuler(double v_x, double v_y, double v_z){   //euler in XYZ
+  double cx = cos(v_x/2), cy = cos(v_y/2), cz = cos(v_z/2);
+  double sx = sin(v_x/2), sy = sin(v_y/2), sz = sin(v_z/2);
+
+  w = (cx * cy * cz) - (sx * sy * sz);
+  x = (sx * cy * cz) + (cx * sy * sz);
+  y = (cx * sy * cz) - (sx * cy * sz);
+  z = (sx * sy * cz) + (cx * cy * sz);
 }
 
 void Quaternion::setMagnitude(double const dist){   //~40 microseconds

@@ -13,6 +13,7 @@ class Quaternion {
     
     double* getValue();
     void getEuler(double& yaw, double& roll, double& pitch);
+    void setEuler(double g_x, double g_y, double g_z);
     void setMagnitude(double const dist);
     
     Quaternion operator* (Quaternion const& q2);
