@@ -5,7 +5,7 @@
 //TODO: create overloads with i2cport for everything
 
 namespace I2C{
-  void init(){ //TODO: make config changable with arguments (pins as arguments or i2c_config as argument) (I2C init)
+  void init(){ //TODO: make config changable with arguments (pins as arguments or i2c_config as argument)
     i2c_config_t conf;
     conf.mode = I2C_MODE_MASTER;
     conf.sda_io_num = GPIO_NUM_16;
@@ -23,7 +23,7 @@ namespace I2C{
     return receiveData;
   }
 
-  bool getRegister(uint8_t device, uint8_t reg, uint8_t * receiveData, int amount){//TODO: create overloads for timeout (I2C getRegister)
+  bool getRegister(uint8_t device, uint8_t reg, uint8_t * receiveData, int amount){//TODO: create overloads for timeout
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();                                  //create command to tell device what to send and read the registers
     i2c_master_start(cmd);                                                         //startbit
     i2c_master_write_byte(cmd, (device << 1) | I2C_MASTER_WRITE, 0x1);             //send device address and tell it that the master is writing , ack check is enabled
@@ -43,7 +43,7 @@ namespace I2C{
     return true;                                                                   //TODO: make return usefull, return true if successful
   }
 
-  void writeRegister(uint8_t device, uint8_t reg, uint8_t data){                   //TODO: return true if successful (writeRegister I2C)
+  void writeRegister(uint8_t device, uint8_t reg, uint8_t data){                   //TODO: return true if successful
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();                                  //create command message
     i2c_master_start(cmd);                                                         //startbit
     i2c_master_write_byte(cmd, (device << 1) | I2C_MASTER_WRITE, 0x1);             //send device address and tell it that the master is writing , ack check is enabled

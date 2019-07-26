@@ -6,6 +6,8 @@
 #-----------------------------------
 
 Gyro	KEYWORD1
+L3G4200D	KEYWORD1
+
 Accelerometer	KEYWORD1
 Compass	KEYWORD1
 Quaternion	KEYWORD1
@@ -18,8 +20,9 @@ Quaternion	KEYWORD1
 setTrim	KEYWORD2
 isReady	KEYWORD2
 calcRot	KEYWORD2
-readGyro	KEYWORD2
-gyroLoop	KEYWORD2
+read	KEYWORD2
+step	KEYWORD2
+init	KEYWORD2
 
 ##Accelerometer
 accelLoop	KEYWORD2

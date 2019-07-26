@@ -29,11 +29,11 @@ void L3G4200D::init(){                                          //TODO: make set
 
 
   //set trim
-  vTaskDelay(10 / portTICK_PERIOD_MS);  //TODO:: check if this is necessary (init L3G4200D)
+  vTaskDelay(10 / portTICK_PERIOD_MS);  //TODO:: check if this is necessary
   Gyro::setTrim(Gyro::trimX, Gyro::trimY, Gyro::trimZ, 1000); //sample size 1000 (takes 5/4 seconds)
 }
 
-void L3G4200D::readGyro(short& gyroX, short& gyroY, short& gyroZ){ // ~280 microseconds
+void L3G4200D::read(short& gyroX, short& gyroY, short& gyroZ){ // ~280 microseconds
   uint8_t gyroData[6];
   I2C::getRegister(GYRO, OUT_X_L | (0b10000000), &gyroData[0], 6);//put data in gyroData with pointer address  -  incement the address after read register (with 0b10000000)
   gyroX = gyroData[1] << 8 | gyroData[0]; //OUT_X_H .. OUT_X_L
@@ -43,5 +43,5 @@ void L3G4200D::readGyro(short& gyroX, short& gyroY, short& gyroZ){ // ~280 micro
 
 bool L3G4200D::isReady(){
   return ((I2C::getRegister(GYRO, STATUS_REG) & 0b00001000) == 0b00001000); // check if data is ready
-                                                                            // TODO: use STATUS_REG 7 to check if data has been overwritten and if so freq must be too high so set or lower (isReady L3G4200D)
+                                                                            // TODO: use STATUS_REG 7 to check if data has been overwritten and if so freq must be too high so set or lower
 }

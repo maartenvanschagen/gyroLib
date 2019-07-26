@@ -15,7 +15,7 @@ class Gyro {
     void step();
     virtual void init();
     virtual bool isReady();
-    virtual void readGyro(short& gyroX, short& gyroY, short& gyroZ);
+    virtual void read(short& gyroX, short& gyroY, short& gyroZ);
 
     #ifdef DEBUG_GYROREADBUFFER
       std::vector<Quaternion> rotationBuffer;
