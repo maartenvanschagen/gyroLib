@@ -1,3 +1,5 @@
-# The test directory
-All files found in this directory are meant for testing the library. The code is usually quite useless and cluttered, it is solely meant for a developer to test their code added to the library. All of these files should be able to be compiled in the esp-idf framework, **don't commit arduino code**.
-To use a test file you will have to (temperarely) copy it to the src directory.
+# The 'test' Directory
+All files found in this directory are intended for developers to test their code. Everything here should be compilable in the ESP-IDF framework. **Don't commit Arduino code**. 
+
+## How to Use
+To use one of these tests you will have to (temporarily) copy the c++ file to the 'src' directory. Hereafter, press the upload button in the bottom left of the Visual Studio Code editor, platform.io should automatically handle everything else.
