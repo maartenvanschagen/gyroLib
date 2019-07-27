@@ -26,7 +26,7 @@
    for(int i = 0; i < samplesize;){
        if(isReady()){
          i++;
-         readGyro(gyroX, gyroY, gyroZ);
+         read(gyroX, gyroY, gyroZ);
          totX += gyroX;
          totY += gyroY;
          totZ += gyroZ;
@@ -50,7 +50,7 @@
  
  void Gyro::step(){
    if(isReady()){
-     readGyro(gyroX, gyroY, gyroZ);
+     read(gyroX, gyroY, gyroZ);
          
      timePast = esp_timer_get_time() - lastMicros;
      lastMicros = esp_timer_get_time();
@@ -70,8 +70,13 @@
    }
  }
 
+ //placeholders
+
 bool Gyro::isReady(){
    return true;
 }
 
+void Gyro::read(short& gyroX, short& gyroY, short& gyroZ){
+
+}
 

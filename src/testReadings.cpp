@@ -1,5 +1,6 @@
 #include "defines.h"
 #include "gyro.h"
+#include "gyros/L3G4200D.h"
 #include "accel.h"
 #include "I2C.h"
 
@@ -7,6 +8,8 @@
 #include <freertos/task.h>
 
 using namespace std;
+
+Gyro gyro = L3G4200D();
 
 void loop();
 
@@ -20,7 +23,7 @@ extern "C" void app_main() {
 
   accel::init();
 
-  gyro::init();
+  gyro.init();
   
   xTaskCreate(
     loop2,             /* Task function. */
@@ -36,7 +39,7 @@ extern "C" void app_main() {
 }
 
 void loop() {
-  printf("gyro:\t%f\t%f\t%f", gyro::roll * 180/M_PI, gyro::yaw * 180/M_PI, gyro::pitch * 180/M_PI);
+  printf("gyro:\t%f\t%f\t%f", gyro.roll * 180/M_PI, gyro.yaw * 180/M_PI, gyro.pitch * 180/M_PI);
   //printf("%f\t%f\t%f", trimX, trimY, trimZ);
   ////printf("\t%i", gyro::timePast);
   //printf("gyro:\t%f\t%f\t%f\t%f", gyro::rotation.w, gyro::rotation.x, gyro::rotation.y, gyro::rotation.z);
@@ -52,7 +55,7 @@ void loop() {
 
   #ifdef DEBUG_GYROREADBUFFER
     printf("________\n");
-    for(Quaternion r : gyro::rotationBuffer){
+    for(Quaternion r : gyro.rotationBuffer){
       double roll, yaw, pitch;
       r.getEuler(yaw, roll, pitch);
       printf("%f\t%f\t%f\n", roll * 180/M_PI, yaw * 180/M_PI, pitch * 180/M_PI);
@@ -67,7 +70,7 @@ void loop() {
 
 void loop2( void * parameter ){
   while(true){
-    gyro::gyroLoop();
+    gyro.step();
     accel::accelLoop();
   }
 }
