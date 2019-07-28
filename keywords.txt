@@ -26,10 +26,10 @@ init	KEYWORD2
 
 ##Accelerometer
 accelLoop	KEYWORD2
-#isReady	KEYWORD2
+isReady	KEYWORD2
 readAccel	KEYWORD2
 calibrate	KEYWORD2
-#calcRot	KEYWORD2
+calcRot	KEYWORD2
 
 ##Quaternion
 getValue	KEYWORD2

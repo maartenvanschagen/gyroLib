@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Gyro gyro = L3G4200D();
+L3G4200D gyro = L3G4200D();
 
 void loop();
 
