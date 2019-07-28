@@ -18,12 +18,12 @@ void loop2( void * );
 
 extern "C" void app_main() {
   I2C::init();
-
-  accel.init();
-  accel.calibrate(1000);
-
   gyro.init();
+  accel.init();
+
+  vTaskDelay(100 / portTICK_PERIOD_MS);
   gyro.setTrim(1000);
+  accel.calibrate(1000);
 
   xTaskCreate(
     loop2,             /* Task function. */
