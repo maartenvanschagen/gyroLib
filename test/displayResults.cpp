@@ -1,7 +1,6 @@
 #include "defines.h"
-#include "gyro.h"
 #include "gyros/L3G4200D.h"
-#include "accel.h"
+#include "accelerometers/ADXL345.h"
 #include "I2C.h"
 
 #include <freertos/FreeRTOS.h>
@@ -10,21 +9,22 @@
 using namespace std;
 
 L3G4200D gyro = L3G4200D();
+ADXL345 accel = ADXL345();
 
 void loop();
 
 TaskHandle_t xHandleLoop2 = NULL;
 void loop2( void * );
 
-//TODO: put all debugging in its own file
-
 extern "C" void app_main() {
   I2C::init();
 
-  accel::init();
+  accel.init();
+  accel.calibrate(1000);
 
   gyro.init();
-  
+  gyro.setTrim(1000);
+
   xTaskCreate(
     loop2,             /* Task function. */
     "gyroLoop",        /* String with name of task. */
@@ -39,15 +39,15 @@ extern "C" void app_main() {
 }
 
 void loop() {
-  printf("gyro:\t%f\t%f\t%f", gyro.roll * 180/M_PI, gyro.yaw * 180/M_PI, gyro.pitch * 180/M_PI);
-  //printf("%f\t%f\t%f", trimX, trimY, trimZ);
-  ////printf("\t%i", gyro::timePast);
-  //printf("gyro:\t%f\t%f\t%f\t%f", gyro::rotation.w, gyro::rotation.x, gyro::rotation.y, gyro::rotation.z);
+  printf("gyro:\t%f\t%f\t%f", gyro.roll * 180/M_PI, gyro.yaw * 180/M_PI, gyro.pitch * 180/M_PI);                      //print euler angles
+  //printf("gyro:\t%f\t%f\t%f\t%f", gyro.rotation.w, gyro.rotation.x, gyro.rotation.y, gyro.rotation.z);                //print quaternion
+  //printf("accel:\t%i\t%i\t%i", gyro.gyroX, gyro.gyroY, gyro.gyroZ);                                                   //print raw data
   printf("\n");
 
 
-  printf("accel:\t%f\t\t\t%f", accel::roll * 180/M_PI, accel::pitch * 180/M_PI);
-  //printf("accel:\t%f\t%f\t%f\t%f", accel::rotation.w, accel::rotation.x, accel::rotation.y, accel::rotation.z);
+  printf("accel:\t%f\t\t\t%f", accel.roll * 180/M_PI, accel.pitch * 180/M_PI);                                        //print euler angles
+  //printf("accel:\t%f\t%f\t%f\t%f", accel.rotation.w, accel.rotation.x, accel.rotation.y, accel.rotation.z);           //print quaternion
+  //printf("accel:\t%i\t%i\t%i", accel.accelX, accel.accelY, accel.accelZ);                                             //print raw data
   printf("\n");
 
   printf("-------\n");
@@ -71,7 +71,7 @@ void loop() {
 void loop2( void * parameter ){
   while(true){
     gyro.step();
-    accel::accelLoop();
+    accel.step();
   }
 }
 

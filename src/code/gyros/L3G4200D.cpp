@@ -5,9 +5,6 @@
 #include "I2C.h"
 #include "gyro.h"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-
 void L3G4200D::init(){                                          //TODO: make settings dependant on defines
   //change settings
   I2C::writeRegister(GYRO, CTRL_REG2, 0b00100001); //set high pass filter freq to 8Hz
@@ -26,11 +23,6 @@ void L3G4200D::init(){                                          //TODO: make set
   I2C::writeRegister(GYRO, INT1_CFG , 0b00000000); //interrups default
   I2C::writeRegister(GYRO, CTRL_REG5, 0b00011000); //enable high pass filter (for interrupt?)
   I2C::writeRegister(GYRO, CTRL_REG1, 0b11101111); //turn on 800Hz, 50Hz cut-off, X, Y, Z enabled
-
-
-  //set trim
-  vTaskDelay(10 / portTICK_PERIOD_MS);  //TODO:: check if this is necessary
-  Gyro::setTrim(Gyro::trimX, Gyro::trimY, Gyro::trimZ, 1000); //sample size 1000 (takes 5/4 seconds)
 }
 
 void L3G4200D::read(short& gyroX, short& gyroY, short& gyroZ){ // ~280 microseconds

@@ -3,6 +3,7 @@
 
 #include "Quaternion.h"
 
+//TODO: fix public private protected
 class Gyro {
   public:
     short gyroX, gyroY, gyroZ;  //2 bytes (just like the register)
@@ -10,16 +11,20 @@ class Gyro {
     double roll, yaw, pitch;
     Quaternion rotation = Quaternion(1, 0, 0, 0);
 
-    void calcRot(double& rotX, double& rotY, double& rotZ, int trimX, int trimY, int trimZ, long timePast);
-    void setTrim(double& TrimXI, double& TrimYI, double& TrimZI, int samplesize);
-    void step();
-    virtual void init();
-    virtual bool isReady();
-    virtual void read(short& gyroX, short& gyroY, short& gyroZ);
-
     #ifdef DEBUG_GYROREADBUFFER
       std::vector<Quaternion> rotationBuffer;
     #endif
+
+    void calcRotation(double& rotX, double& rotY, double& rotZ, int trimX, int trimY, int trimZ, long timePast);
+    void setTrim(double& TrimXI, double& TrimYI, double& TrimZI, int samplesize = 1000, bool changeOffset = true);
+    void setTrim(int samplesize = 1000, bool changeOffset = true);
+    void step();
+
+    //not necessary to override
+    virtual bool isReady();
+    //necessary to override
+    virtual void init() = 0;
+    virtual void read(short& gyroX, short& gyroY, short& gyroZ) = 0;
   private:
     long lastMicros;
     int timePast = 0;

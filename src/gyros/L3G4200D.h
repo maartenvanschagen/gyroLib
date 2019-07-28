@@ -1,12 +1,7 @@
 #ifndef L3G4200D_H
 #define L3G4200D_H
 
-#include "Quaternion.h"
 #include "gyro.h"
-#include <vector>
-
-//#define DEBUG_GYROREADBUFFER      //Slows down gyro reading and fills up serial monitor
-#define DEBUG_GYROREADBUFFER_MAXSIZE 10
 
 //L3G4200D
 #define GYRO            0x69

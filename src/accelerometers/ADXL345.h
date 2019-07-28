@@ -1,7 +1,7 @@
-#ifndef ACCEL_H
-#define ACCEL_H
+#ifndef ADXL345_H
+#define ADXL345_H
 
-#include "Quaternion.h"
+#include "accelerometer.h"
 
 //ADXL345
 #define ACCEL             0x53
@@ -30,19 +30,12 @@
 #define FIFO_CTL        0x38
 #define FIFO_STATUS     0x39
 
-namespace accel {
-  extern double roll, pitch;
-  extern short accelX, accelY, accelZ;
-  extern Quaternion rotation;
-  
-  void accelLoop();
-  void init();
-  bool isReady();
-  void readAccel(short& accelX, short& accelY, short& accelZ);
-  void readAccel();
-  void calibrate(short& accelX, short& accelY, short& accelZ);
-  void calcRot(double& roll, double& pitch);
-  Quaternion calcRot();
+class ADXL345: public Accelerometer {
+  public:
+    bool isReady() override;
+    void setOffset(short offsetX, short offsetY, short offsetZ) override;
+    void init() override;
+    void read(short& accelX, short& accelY, short& accelZ) override;
 };
 
 #endif

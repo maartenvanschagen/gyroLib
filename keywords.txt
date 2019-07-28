@@ -9,7 +9,10 @@ Gyro	KEYWORD1
 L3G4200D	KEYWORD1
 
 Accelerometer	KEYWORD1
+ADXL345	KEYWORD1
+
 Compass	KEYWORD1
+
 Quaternion	KEYWORD1
 
 #-----------------------------------
@@ -17,25 +20,32 @@ Quaternion	KEYWORD1
 #-----------------------------------
 
 ##Gyro
+calcRotation	KEYWORD2
 setTrim	KEYWORD2
-isReady	KEYWORD2
-calcRot	KEYWORD2
-read	KEYWORD2
 step	KEYWORD2
+isReady	KEYWORD2
 init	KEYWORD2
+read	KEYWORD2
 
 ##Accelerometer
-accelLoop	KEYWORD2
-isReady	KEYWORD2
-readAccel	KEYWORD2
+step	KEYWORD2
+read	KEYWORD2
 calibrate	KEYWORD2
-calcRot	KEYWORD2
+calcRotation	KEYWORD2
+isReady	KEYWORD2
+setOffset	KEYWORD2
+init	KEYWORD2
+read	KEYWORD2
 
 ##Quaternion
 getValue	KEYWORD2
 getEuler	KEYWORD2
 setMagnitude	KEYWORD2
 
+##I2C
+init	KEYWORD2
+getRegister	KEYWORD2
+writeRegister	KEYWORD2
 
 #-----------------------------------
 # Instances	KEYWORD2
