@@ -10,7 +10,7 @@ Support for platform.io should be coming around this version. The library will f
 #### Version 0.3
 All features required by the 'ESP32 Quadcopter' project shall be fully supported.
 #### Version 0.4
-Version 0.4 will add support for AVR microcontrollers. Which means most Arduino board should be supported.
+Version 0.4 will add support for AVR microcontrollers. Which means most Arduino boards should be supported.
 #### Version 0.5
 Documentation should be coming around version 0.5.
 #### Version 1.0
