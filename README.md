@@ -4,7 +4,7 @@ At first, it will just be an Arduino library built for the ESP32 to interface wi
 
 ## Roadmap to Release
 #### Version 0.1
-Goals for version 0.1 include cleaning up the code and making it modular. Version 0.1 will also feature a clean interface for users.
+Goals for version 0.1 include cleaning up the code and making it modular. Version 0.1 will also feature a clean interface for users. Also a dev branch will be added to make sure the master branch keeps working.
 #### Version 0.2
 Support for platform.io should be coming around this version. The library will fully support the Arduino and ESP-IDF frameworks.
 #### Version 0.3
