@@ -33,9 +33,9 @@
 class ADXL345: public Accelerometer {
   public:
     bool isReady() override;
-    void setOffset(short offsetX, short offsetY, short offsetZ) override;
+    void setOffset(double offsetX, double offsetY, double offsetZ) override;
     void init() override;
-    void read(short& accelX, short& accelY, short& accelZ) override;
+    void read(int& rawX, int& rawY, int& rawZ) override;
 };
 
 #endif

@@ -6,8 +6,6 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-using namespace std;
-
 L3G4200D gyro = L3G4200D();
 ADXL345 accel = ADXL345();
 
@@ -22,7 +20,7 @@ extern "C" void app_main() {
   accel.init();
 
   vTaskDelay(100 / portTICK_PERIOD_MS);
-  gyro.setTrim(1000);
+  gyro.calibrate(1000);
   accel.calibrate(1000);
 
   xTaskCreate(
@@ -39,15 +37,21 @@ extern "C" void app_main() {
 }
 
 void loop() {
-  printf("gyro:\t%f\t%f\t%f", gyro.roll * 180/M_PI, gyro.yaw * 180/M_PI, gyro.pitch * 180/M_PI);                      //print euler angles
+  double gyroYaw, gyroPitch, gyroRoll;
+  gyro.getEuler(gyroYaw, gyroPitch, gyroRoll);
+  printf("gyro:\t%f\t%f\t%f", gyroRoll * 180/M_PI, gyroYaw * 180/M_PI, gyroPitch * 180/M_PI);                         //print euler angles  //TODO: fix gyro rotation, somewhere in code order is confused
   //printf("gyro:\t%f\t%f\t%f\t%f", gyro.rotation.w, gyro.rotation.x, gyro.rotation.y, gyro.rotation.z);                //print quaternion
-  //printf("accel:\t%i\t%i\t%i", gyro.gyroX, gyro.gyroY, gyro.gyroZ);                                                   //print raw data
+  //printf("accel:\t%i\t%i\t%i", gyro.rawX, gyro.rawY, gyro.rawZ);                                                      //print raw data
   printf("\n");
 
 
-  printf("accel:\t%f\t\t\t%f", accel.roll * 180/M_PI, accel.pitch * 180/M_PI);                                        //print euler angles
-  //printf("accel:\t%f\t%f\t%f\t%f", accel.rotation.w, accel.rotation.x, accel.rotation.y, accel.rotation.z);           //print quaternion
-  //printf("accel:\t%i\t%i\t%i", accel.accelX, accel.accelY, accel.accelZ);                                             //print raw data
+  Quaternion accelRotation = accel.getQuaternion(gyroYaw);
+  double yaw, pitch, roll;
+  accelRotation.getEuler(yaw, pitch, roll);
+  //printf("accel:\t%f\t%f\t%f", yaw * 180/M_PI, pitch * 180/M_PI, roll * 180/M_PI);                                    //print converted to quaternion and back to Euler
+  printf("accel:\t\t\t%f\t%f", accel.pitch * 180/M_PI, accel.roll * 180/M_PI);                                        //print euler angles
+  //printf("accel:\t%f\t%f\t%f\t%f", accelRotation.w, accelRotation.x, accelRotation.y, accelRotation.z);               //print quaternion
+  //printf("accel:\t%i\t%i\t%i", accel.rawX, accel.rawY, accel.rawZ);                                                   //print raw data
   printf("\n");
 
   printf("-------\n");

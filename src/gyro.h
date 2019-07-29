@@ -6,25 +6,26 @@
 //TODO: fix public private protected
 class Gyro {
   public:
-    short gyroX, gyroY, gyroZ;  //2 bytes (just like the register)
-    double trimX, trimY, trimZ;
-    double roll, yaw, pitch;
-    Quaternion rotation = Quaternion(1, 0, 0, 0);
+    double offsetX, offsetY, offsetZ;
+    Quaternion rotation = Quaternion(1, 0, 0, 0); //TODO: fix y and z switched
 
     #ifdef DEBUG_GYROREADBUFFER
       std::vector<Quaternion> rotationBuffer;
     #endif
 
-    void calcRotation(double& rotX, double& rotY, double& rotZ, int trimX, int trimY, int trimZ, long timePast);
-    void setTrim(double& TrimXI, double& TrimYI, double& TrimZI, int samplesize = 1000, bool changeOffset = true);
-    void setTrim(int samplesize = 1000, bool changeOffset = true);
+    void calcRotation(int rawX, int rawY, int rawZ, double& rotationX, double& rotationY, double& rotationZ, long timePast);
+    void calcRotation(double& rotationX, double& rotationY, double& rotationZ, long timePast);
+    void calibrate(double& offsetX, double& offsetY, double& offsetZ, int samplesize = 1000, bool changeOffset = true);
+    void calibrate(int samplesize = 1000, bool changeOffset = true);
     void step();
+    void getEuler(double& yaw, double& pitch, double& roll);
 
     //not necessary to override
     virtual bool isReady();
     //necessary to override
     virtual void init() = 0;
-    virtual void read(short& gyroX, short& gyroY, short& gyroZ) = 0;
+    virtual void read(int& rawX, int& rawY, int& rawZ) = 0; //is int for compatibility
+    virtual void calcRotation(int rawX, int rawY, int rawZ, double& rotationX, double& rotationY, double& rotationZ, double offsetX, double offsetY, double offsetZ, long timePast) = 0;
   private:
     long lastMicros;
     int timePast = 0;

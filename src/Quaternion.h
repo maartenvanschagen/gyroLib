@@ -7,13 +7,13 @@ class Quaternion {
   public:
     double w, x, y, z;
     Quaternion(double w, double x, double y, double z);
-    Quaternion(double g_x, double g_y, double g_z);
+    Quaternion(double yaw, double pitch, double roll);
     Quaternion();
     ~Quaternion();
     
     double* getValue();
-    void getEuler(double& yaw, double& roll, double& pitch);
-    void setEuler(double g_x, double g_y, double g_z);
+    void getEuler(double& yaw, double& pitch, double& roll);
+    void setEuler(double yaw, double pitch, double roll);
     void setMagnitude(double const dist);
     
     Quaternion operator* (Quaternion const& q2);

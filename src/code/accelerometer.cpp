@@ -12,15 +12,11 @@ double range(double val){
   return fmod((val + M_PI), (2 * M_PI)) - M_PI;
 }
 
-void Accelerometer::read(){
-  read(accelX, accelY, accelZ);
-}
-
-void Accelerometer::calibrate(short& accelX, short& accelY, short& accelZ, int samplesize, bool changeOffset){
+void Accelerometer::calibrate(int& rawX, int& rawY, int& rawZ, int samplesize, bool changeOffset){
   long accelXTotal = 0;
   long accelYTotal = 0;
   long accelZTotal = 0;
-  short accelXdata, accelYdata, accelZdata;
+  int accelXdata, accelYdata, accelZdata;
 
   //Set all three axes offsets to 0
   setOffset(0, 0, 0);
@@ -33,54 +29,66 @@ void Accelerometer::calibrate(short& accelX, short& accelY, short& accelZ, int s
     accelZTotal += accelZdata;
   }
 
-  accelX = accelXTotal / samplesize;
-  accelY = accelYTotal / samplesize;
-  accelZ = accelZTotal / samplesize;
+  rawX = accelXTotal / samplesize;
+  rawY = accelYTotal / samplesize;
+  rawZ = accelZTotal / samplesize;
 
   //Set all three axes offsets
   if(changeOffset){
-    setOffset(zeroX-accelX, zeroY-accelY, zeroZ-accelZ);
+    setOffset(zeroX-rawX, zeroY-rawY, zeroZ-rawZ);
   }
 }
 
 void Accelerometer::calibrate(int samplesize, bool changeOffset){
-  short accelX, accelY, accelZ;
-  calibrate(accelX, accelY, accelZ, samplesize, changeOffset);
+  int rawX, rawY, rawZ;
+  calibrate(rawX, rawY, rawZ, samplesize, changeOffset);
 }
 
-Quaternion Accelerometer::calcRotation(double yaw){
-  double roll, pitch;
-  calcRotation(roll, pitch);
-  
-  return Quaternion(roll, yaw, pitch);
+void Accelerometer::calcRotation(int rawX, int rawY, int rawZ, double& pitch, double& roll){
+  roll = range(atan2(-rawY, rawZ)+M_PI);                      //from the internet
+  pitch = -atan2(rawX, sqrt(rawY*rawY + rawZ*rawZ));          //from the internet
 }
 
-void Accelerometer::calcRotation(double& roll, double& pitch){
-  roll = range(atan2(-accelY, accelZ)+M_PI);                      //from the internet
-  pitch = -atan2(accelX, sqrt(accelY*accelY + accelZ*accelZ));    //from the internet
+void Accelerometer::calcRotation(double& pitch, double& roll){
+  int rawX, rawY, rawZ;
+  read(rawX, rawY, rawZ);
+  calcRotation(rawX, rawY, rawZ, pitch, roll);
 }
 
 void Accelerometer::step(double yaw){
   if(isReady()){
-    read(accelX, accelY, accelZ);
-
-    //TODO: Trim
-    calcRotation(roll, pitch);
-    
-    rotation = calcRotation(yaw);
+    calcRotation(pitch, roll);
   }
 }
 
-void Accelerometer::setZeroReading(short accelX, short accelY, short accelZ){
-  zeroX = accelX;
-  zeroY = accelY;
-  zeroZ = accelZ;
+Quaternion Accelerometer::calcRotation(int rawX, int rawY, int rawZ, double yaw){
+  double pitch, roll;
+  calcRotation(rawX, rawY, rawZ, pitch, roll);
+  
+  return Quaternion(yaw, pitch, roll);
 }
 
-void Accelerometer::setOffset(short offsetX, short offsetY, short offsetZ){
+Quaternion Accelerometer::calcRotation(double yaw){
+  double pitch, roll;
+  calcRotation(pitch, roll);
+  
+  return Quaternion(yaw, pitch, roll);
+}
+
+void Accelerometer::setZeroReading(double zeroX, double zeroY, double zeroZ){
+  this->zeroX = zeroX;
+  this->zeroY = zeroY;
+  this->zeroZ = zeroZ;
+}
+
+void Accelerometer::setOffset(double offsetX, double offsetY, double offsetZ){
   this->offsetX = offsetX;
   this->offsetY = offsetY;
   this->offsetZ = offsetZ;
+}
+
+Quaternion Accelerometer::getQuaternion(double yaw){
+  return Quaternion(yaw, pitch, roll);
 }
 
 bool Accelerometer::isReady(){

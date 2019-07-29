@@ -21,8 +21,9 @@ Quaternion	KEYWORD1
 
 ##Gyro
 calcRotation	KEYWORD2
-setTrim	KEYWORD2
+calibrate	KEYWORD2
 step	KEYWORD2
+getRotation	KEYWORD2
 isReady	KEYWORD2
 init	KEYWORD2
 read	KEYWORD2

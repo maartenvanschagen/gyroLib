@@ -34,7 +34,8 @@ class L3G4200D: public Gyro {
   public:
     void init() override;
     bool isReady() override;
-    void read(short& gyroX, short& gyroY, short& gyroZ) override;
+    void read(int& rawX, int& rawY, int& rawZ) override;
+    void calcRotation(int rawX, int rawY, int rawZ, double& rotationX, double& rotationY, double& rotationZ, double offsetX, double offsetY, double offsetZ, long timePast) override;
 };
 
 #endif

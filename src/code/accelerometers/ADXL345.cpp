@@ -3,6 +3,8 @@
 #include "defines.h"
 #include "I2C.h"
 
+#include <freertos/FreeRTOS.h>
+
 void ADXL345::init(){
   //change settings
     //Set all three axes offsets to 0    because calibration is disabled
@@ -34,15 +36,15 @@ bool ADXL345::isReady(){
   return ((I2C::getRegister(ACCEL, INT_SOURCE) & 0b10000000) == 0b10000000);  //check if data is ready
 }
 
-void ADXL345::read(short& accelX, short& accelY, short& accelZ){
+void ADXL345::read(int& rawX, int& rawY, int& rawZ){
   uint8_t accelData[6];
   I2C::getRegister(ACCEL, DATAX0, &accelData[0], 6);//put data in accelData with pointer address, increment is automatic
-  accelX = accelData[1] << 8 | accelData[0]; //DATAX1 .. DATAX0
-  accelY = accelData[3] << 8 | accelData[2]; //DATAY1 .. DATAY0
-  accelZ = accelData[5] << 8 | accelData[4]; //DATAZ1 .. DATAZ0
+  rawX = (short)(accelData[1] << 8 | accelData[0]); //DATAX1 .. DATAX0    //shorts are to handle negatives (last bit)
+  rawY = (short)(accelData[3] << 8 | accelData[2]); //DATAY1 .. DATAY0
+  rawZ = (short)(accelData[5] << 8 | accelData[4]); //DATAZ1 .. DATAZ0
 }
 
-void ADXL345::setOffset(short offsetX, short offsetY, short offsetZ){
+void ADXL345::setOffset(double offsetX, double offsetY, double offsetZ){
   I2C::writeRegister(ACCEL, OFSX, (uint8_t)(offsetX/4));
   I2C::writeRegister(ACCEL, OFSY, (uint8_t)(offsetY/4));
   I2C::writeRegister(ACCEL, OFSZ, (uint8_t)(offsetZ/4));
