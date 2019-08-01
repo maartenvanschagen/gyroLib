@@ -2,6 +2,7 @@
 #include "gyros/L3G4200D.h"
 #include "accelerometers/ADXL345.h"
 #include "I2C.h"
+#include "wrapper.h"
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
@@ -19,7 +20,7 @@ extern "C" void app_main() {
   gyro.init();
   accel.init();
 
-  vTaskDelay(100 / portTICK_PERIOD_MS);
+  wrapper::delayMillis(100);
   gyro.calibrate(1000);
   accel.calibrate(1000);
 
@@ -67,7 +68,7 @@ void loop() {
     printf("-------\n");
   #endif
 
-  vTaskDelay(100 / portTICK_PERIOD_MS);
+  wrapper::delayMillis(100);
 }
 
 

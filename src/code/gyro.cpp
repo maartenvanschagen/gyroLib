@@ -2,12 +2,12 @@
 
 #include "defines.h"
 #include "Quaternion.h"
+#include "wrapper.h"
 
 #ifdef DEBUG_GYROREADBUFFER
   #include <vector>
 #endif
 
-#include "freertos/FreeRTOS.h"
 
 //functions
 
@@ -37,8 +37,8 @@ void Gyro::calibrate(double& offsetX, double& offsetY, double& offsetZ, int samp
 
 void Gyro::step(){
   if(isReady()){
-    timePast = esp_timer_get_time() - lastMicros;
-    lastMicros = esp_timer_get_time();
+    timePast = wrapper::getMicros() - lastMicros;
+    lastMicros = wrapper::getMicros();
     
     double rotationX, rotationY, rotationZ;
     calcRotation(rotationX, rotationY, rotationZ, timePast);
