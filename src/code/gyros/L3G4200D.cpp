@@ -38,8 +38,9 @@ bool L3G4200D::isReady(){
                                                                             // TODO: use STATUS_REG 7 to check if data has been overwritten and if so freq must be too high so set or lower
 }
 
-void L3G4200D::calcRotation(int rawX, int rawY, int rawZ, double& rotationX, double& rotationY, double& rotationZ, double offsetX, double offsetY, double offsetZ, long timePast){ // ~15 microseconds
-  rotationX = -(rawX - offsetX) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // (gyro trimmed) * sensitivity op 500 dps * timePast(s) * degToRad
-  rotationY = -(rawY - offsetY) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // all static numbers gets calculated by compiler
-  rotationZ =  (rawZ - offsetZ) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);
+void L3G4200D::calcRotation(int rawX, int rawY, int rawZ, double& yaw, double& pitch, double& roll, double offsetX, double offsetY, double offsetZ, long timePast){ // ~15 microseconds
+  double rotationX = -(rawX - offsetX) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // (gyro trimmed) * sensitivity op 500 dps * timePast(s) * degToRad
+  double rotationY = -(rawY - offsetY) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // all static numbers gets calculated by compiler
+  double rotationZ =  (rawZ - offsetZ) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);
+  transformMountRotation(rotationX, rotationY, rotationZ, yaw, pitch, roll);
 }

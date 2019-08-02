@@ -4,6 +4,8 @@
 #include "Quaternion.h"
 #include "wrapper.h"
 
+#include <algorithm>
+
 #ifdef DEBUG_GYROREADBUFFER
   #include <vector>
 #endif
@@ -53,6 +55,27 @@ void Gyro::step(){
   }
 }
 
+void Gyro::transformMountRotation(double x, double y, double z, double& yaw, double& pitch, double& roll){
+  double val[3] = {x, y, z};
+  
+  for(short i = 0; i < 3; i++){
+    switch(YPR[i]){
+      case 'X':
+        yaw = val[i];
+        if(reverse[0]){yaw=-yaw;}
+        break;
+      case 'Y':
+        pitch = val[i];
+        if(reverse[1]){pitch=-pitch;}
+        break;
+      case 'Z':
+        roll = val[i];
+        if(reverse[2]){roll=-roll;}
+        break;
+    }
+  }
+}
+
 void Gyro::getEuler(double& yaw, double& pitch, double& roll){
   rotation.getEuler(yaw, pitch, roll);
 }
@@ -64,18 +87,31 @@ void Gyro::calibrate(int samplesize, bool changeOffset){
   calibrate(offsetX, offsetY, offsetZ, samplesize, changeOffset);
 }
 
-void Gyro::calcRotation(int rawX, int rawY, int rawZ, double& rotationX, double& rotationY, double& rotationZ, long timePast){
-  calcRotation(rawX, rawY, rawZ, rotationX, rotationY, rotationZ, offsetX, offsetY, offsetZ, timePast);
+void Gyro::calcRotation(int rawX, int rawY, int rawZ, double& yaw, double& pitch, double& roll, long timePast){
+  calcRotation(rawX, rawY, rawZ, yaw, pitch, roll, offsetX, offsetY, offsetZ, timePast);
 }
 
-void Gyro::calcRotation(double& rotationX, double& rotationY, double& rotationZ, long timePast){
+void Gyro::calcRotation(double& yaw, double& pitch, double& roll, long timePast){
   int rawX, rawY, rawZ;
   read(rawX, rawY, rawZ);
-  calcRotation(rawX, rawY, rawZ, rotationX, rotationY, rotationZ, offsetX, offsetY, offsetZ, timePast);
+  calcRotation(rawX, rawY, rawZ, yaw, pitch, roll, offsetX, offsetY, offsetZ, timePast);
 }
 
 //placeholders
 
 bool Gyro::isReady(){
    return true;
+}
+
+//getters and setters
+void Gyro::setYPR(std::string YPR){
+  this->YPR[0] = YPR[0];
+  this->YPR[1] = YPR[1];
+  this->YPR[2] = YPR[2];
+}
+
+void Gyro::setReverse(bool x, bool y, bool z){
+  reverse[0] = x;
+  reverse[1] = y;
+  reverse[2] = z;
 }

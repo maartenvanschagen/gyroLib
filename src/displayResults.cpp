@@ -17,6 +17,8 @@ void loop2( void * );
 
 extern "C" void app_main() {
   I2C::init();
+  gyro.setYPR("XYZ");
+  gyro.setReverse(false, false, false);
   gyro.init();
   accel.init();
 
@@ -40,15 +42,20 @@ extern "C" void app_main() {
 void loop() {
   double gyroYaw, gyroPitch, gyroRoll;
   gyro.getEuler(gyroYaw, gyroPitch, gyroRoll);
-  printf("gyro:\t%f\t%f\t%f", gyroRoll * 180/M_PI, gyroYaw * 180/M_PI, gyroPitch * 180/M_PI);                         //print euler angles  //TODO: fix gyro rotation, somewhere in code order is confused
-  //printf("gyro:\t%f\t%f\t%f\t%f", gyro.rotation.w, gyro.rotation.x, gyro.rotation.y, gyro.rotation.z);                //print quaternion
-  //printf("accel:\t%i\t%i\t%i", gyro.rawX, gyro.rawY, gyro.rawZ);                                                      //print raw data
-  printf("\n");
-
 
   Quaternion accelRotation = accel.getQuaternion(gyroYaw);
   double yaw, pitch, roll;
   accelRotation.getEuler(yaw, pitch, roll);
+
+
+  printf("\tyaw\t\tpitch\t\troll");     //print euler angle info
+  printf("\n");
+
+  printf("gyro:\t%f\t%f\t%f", gyroYaw * 180/M_PI, gyroPitch * 180/M_PI, gyroRoll * 180/M_PI);                         //print euler angles
+  //printf("gyro:\t%f\t%f\t%f\t%f", gyro.rotation.w, gyro.rotation.x, gyro.rotation.y, gyro.rotation.z);                //print quaternion
+  //printf("accel:\t%i\t%i\t%i", gyro.rawX, gyro.rawY, gyro.rawZ);                                                      //print raw data
+  printf("\n");
+
   //printf("accel:\t%f\t%f\t%f", yaw * 180/M_PI, pitch * 180/M_PI, roll * 180/M_PI);                                    //print converted to quaternion and back to Euler
   printf("accel:\t\t\t%f\t%f", accel.pitch * 180/M_PI, accel.roll * 180/M_PI);                                        //print euler angles
   //printf("accel:\t%f\t%f\t%f\t%f", accelRotation.w, accelRotation.x, accelRotation.y, accelRotation.z);               //print quaternion
@@ -68,7 +75,7 @@ void loop() {
     printf("-------\n");
   #endif
 
-  wrapper::delayMillis(100);
+  wrapper::delayMillis(150);
 }
 
 

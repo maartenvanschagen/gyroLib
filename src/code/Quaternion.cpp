@@ -44,14 +44,19 @@ void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 mic
   yaw = atan2(siny_cosp, cosy_cosp);
 }
 
-void Quaternion::setEuler(double yaw, double pitch, double roll){   //euler in XYZ
-  double cx = cos(yaw/2), cy = cos(roll/2), cz = cos(pitch/2);
-  double sx = sin(yaw/2), sy = sin(roll/2), sz = sin(pitch/2);
+void Quaternion::setEuler(double yaw, double pitch, double roll){   //euler in ZYX
+  double cy = cos(yaw/2), cp = cos(pitch/2), cr = cos(roll/2);
+  double sy = sin(yaw/2), sp = sin(pitch/2), sr = sin(roll/2);
 
-  w = (cx * cy * cz) - (sx * sy * sz);
-  x = (sx * cy * cz) + (cx * sy * sz);
-  y = (cx * sy * cz) - (sx * cy * sz);
-  z = (sx * sy * cz) + (cx * cy * sz);
+/*w = (cy * cp * cr) - (sy * sp * sr);    //euler in XYZ
+  x = (sy * cp * cr) + (cy * sp * sr);
+  y = (cy * sp * cr) - (sy * cp * sr);
+  z = (sy * sp * cr) + (cy * cp * sr);*/
+
+  w = cy * cp * cr + sy * sp * sr;
+  x = sy * cp * cr - cy * sp * sr;
+  y = cy * sp * cr + sy * cp * sr;
+  z = cy * cp * sr - sy * sp * cr;
 }
 
 void Quaternion::setMagnitude(double const dist){   //~40 microseconds
