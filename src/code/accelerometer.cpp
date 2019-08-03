@@ -88,7 +88,7 @@ void Accelerometer::setOffset(double offsetX, double offsetY, double offsetZ){
 }
 
 Quaternion Accelerometer::getQuaternion(double yaw){
-  return Quaternion(yaw, pitch, roll);
+  return Quaternion(roll, pitch, yaw);
 }
 
 bool Accelerometer::isReady(){

@@ -43,22 +43,23 @@ void loop() {
   double gyroYaw, gyroPitch, gyroRoll;
   gyro.getEuler(gyroYaw, gyroPitch, gyroRoll);
 
-  Quaternion accelRotation = accel.getQuaternion(gyroYaw);
+  Quaternion accelRotation = accel.getQuaternion(gyroYaw);  //TODO: mix up yaw and roll
   double yaw, pitch, roll;
   accelRotation.getEuler(yaw, pitch, roll);
 
 
-  printf("\tyaw\t\tpitch\t\troll");     //print euler angle info
+  //printf("\tyaw\t\tpitch\t\troll");     //print euler angle info
+  printf("\tw\t\tx\t\ty\t\tz");         //print quaternion info
   printf("\n");
 
-  printf("gyro:\t%f\t%f\t%f", gyroYaw * 180/M_PI, gyroPitch * 180/M_PI, gyroRoll * 180/M_PI);                         //print euler angles
-  //printf("gyro:\t%f\t%f\t%f\t%f", gyro.rotation.w, gyro.rotation.x, gyro.rotation.y, gyro.rotation.z);                //print quaternion
+  //printf("gyro:\t%f\t%f\t%f", gyroYaw * 180/M_PI, gyroPitch * 180/M_PI, gyroRoll * 180/M_PI);                         //print euler angles
+  printf("gyro:\t%f\t%f\t%f\t%f", gyro.rotation.w, gyro.rotation.x, gyro.rotation.y, gyro.rotation.z);                //print quaternion
   //printf("accel:\t%i\t%i\t%i", gyro.rawX, gyro.rawY, gyro.rawZ);                                                      //print raw data
   printf("\n");
 
   //printf("accel:\t%f\t%f\t%f", yaw * 180/M_PI, pitch * 180/M_PI, roll * 180/M_PI);                                    //print converted to quaternion and back to Euler
-  printf("accel:\t\t\t%f\t%f", accel.pitch * 180/M_PI, accel.roll * 180/M_PI);                                        //print euler angles
-  //printf("accel:\t%f\t%f\t%f\t%f", accelRotation.w, accelRotation.x, accelRotation.y, accelRotation.z);               //print quaternion
+  //printf("accel:\t\t\t%f\t%f", accel.pitch * 180/M_PI, accel.roll * 180/M_PI);                                        //print euler angles
+  printf("accel:\t%f\t%f\t%f\t%f", accelRotation.w, accelRotation.x, accelRotation.y, accelRotation.z);               //print quaternion
   //printf("accel:\t%i\t%i\t%i", accel.rawX, accel.rawY, accel.rawZ);                                                   //print raw data
   printf("\n");
 

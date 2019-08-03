@@ -25,6 +25,7 @@ double* Quaternion::getValue(){
   return temp;
 }
 
+/*
 void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 microseconds  ,  euler in XYZ     ///Modified version of WIKIPEDIA code
   // roll (x-axis rotation)
   double sinr_cosp = +2.0 * (w * x + y * z);
@@ -42,6 +43,25 @@ void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 mic
   double siny_cosp = +2.0 * (w * z + x * y);
   double cosy_cosp = +1.0 - 2.0 * (y * y + z * z);  
   yaw = atan2(siny_cosp, cosy_cosp);
+}*/
+
+void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 microseconds  ,  euler in XYZ     ///Modified version of WIKIPEDIA code
+  // roll (x-axis rotation)
+  double sinr_cosp = +2.0 * (w * x + y * z);
+  double cosr_cosp = w*w - x*x - y*y + z*z;
+  roll = atan2(sinr_cosp, cosr_cosp);
+
+  // pitch (y-axis rotation)
+  double sinp = +2.0 * ( z * x - w * y);
+  if (fabs(sinp) >= 1)
+    pitch = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+  else
+    pitch = asin(sinp);
+
+  // yaw (z-axis rotation)
+  double siny_cosp = +2.0 * (w * z + x * y);
+  double cosy_cosp = w*w + x*x - y*y - z*z;  
+  yaw = atan2(siny_cosp, cosy_cosp);
 }
 
 void Quaternion::setEuler(double yaw, double pitch, double roll){   //euler in ZYX
@@ -52,11 +72,10 @@ void Quaternion::setEuler(double yaw, double pitch, double roll){   //euler in Z
   x = (sy * cp * cr) + (cy * sp * sr);
   y = (cy * sp * cr) - (sy * cp * sr);
   z = (sy * sp * cr) + (cy * cp * sr);*/
-
-  w = cy * cp * cr + sy * sp * sr;
-  x = sy * cp * cr - cy * sp * sr;
-  y = cy * sp * cr + sy * cp * sr;
-  z = cy * cp * sr - sy * sp * cr;
+  w = (cy * cp * cr) + (sy * sp * sr);    //euler in ZYX
+  x = (sy * cp * cr) - (cy * sp * sr);
+  y = (cy * sp * cr) + (sy * cp * sr);
+  z = (cy * cp * sr) - (sy * sp * cr);
 }
 
 void Quaternion::setMagnitude(double const dist){   //~40 microseconds
