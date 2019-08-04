@@ -10,12 +10,12 @@ class Accelerometer {
     double offsetX, offsetY, offsetZ;
     double zeroX = 0, zeroY = 0, zeroZ = -255;
     
-    void step(double yaw = 0);
+    void step();
     void calibrate(int& rawX, int& rawY, int& rawZ, int samplesize = 1000, bool changeOffset = true);
     void calibrate(int samplesize = 1000, bool changeOffset = true);
     void calcRotation(int rawX, int rawY, int rawZ, double& pitch, double& roll);
     void calcRotation(double& pitch, double& roll);
-    Quaternion calcRotation(int rawX, int rawY, int rawZ, double yaw= 0);
+    Quaternion calcRotation(int rawX, int rawY, int rawZ, double yaw = 0);
     Quaternion calcRotation(double yaw = 0);
     void setZeroReading(double zeroX, double zeroY, double zeroZ);
     Quaternion getQuaternion(double yaw = 0);

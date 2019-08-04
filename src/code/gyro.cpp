@@ -50,7 +50,9 @@ void Gyro::step(){
       if(rotationBuffer.size() > DEBUG_GYROREADBUFFER_MAXSIZE){rotationBuffer.erase(rotationBuffer.begin());}
     #endif
     
-    rotation *= Quaternion(rotationX, rotationY, rotationZ); //rotate with the measured amount
+    Quaternion rotationChange = Quaternion();
+    rotationChange.setGyro(rotationX, rotationY, rotationZ);
+    rotation *= rotationChange; //rotate with the measured amount
     rotation.setMagnitude(1);
   }
 }

@@ -55,7 +55,7 @@ void Accelerometer::calcRotation(double& pitch, double& roll){
   calcRotation(rawX, rawY, rawZ, pitch, roll);
 }
 
-void Accelerometer::step(double yaw){
+void Accelerometer::step(){
   if(isReady()){
     calcRotation(pitch, roll);
   }
@@ -88,7 +88,7 @@ void Accelerometer::setOffset(double offsetX, double offsetY, double offsetZ){
 }
 
 Quaternion Accelerometer::getQuaternion(double yaw){
-  return Quaternion(roll, pitch, yaw);
+  return Quaternion(yaw, pitch, roll);
 }
 
 bool Accelerometer::isReady(){
