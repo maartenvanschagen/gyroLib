@@ -4,7 +4,7 @@
 #include "Quaternion.h"
 #include <cmath>
 
-//TODO: enable calibration, maybe something better suited then a single-point calibration scheme
+//TODO: support different callibration schemes, single-point calibration works quite poorly
 //TODO: add gyro offset angle vs thrust angle (manuel or automatic)
 
 

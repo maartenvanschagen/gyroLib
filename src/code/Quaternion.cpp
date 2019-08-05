@@ -54,9 +54,9 @@ void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 mic
   // pitch (y-axis rotation)
   double sinp = +2.0 * ( z * x - w * y);
   if (fabs(sinp) >= 1)
-    pitch = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
+    pitch = -copysign(M_PI / 2, sinp); // use 90 degrees if out of range
   else
-    pitch = asin(sinp);
+    pitch = -asin(sinp);
 
   // yaw (z-axis rotation)
   double siny_cosp = +2.0 * (w * z + x * y);
