@@ -52,7 +52,7 @@ void Gyro::step(){
     
     Quaternion rotationChange = Quaternion();
     rotationChange.setGyro(rotationX, rotationY, rotationZ);
-    rotation *= rotationChange; //rotate with the measured amount
+    rotation *= rotationChange;
     rotation.setMagnitude(1);
   }
 }
@@ -99,12 +99,6 @@ void Gyro::calcRotation(double& yaw, double& pitch, double& roll, long timePast)
   calcRotation(rawX, rawY, rawZ, yaw, pitch, roll, offsetX, offsetY, offsetZ, timePast);
 }
 
-//placeholders
-
-bool Gyro::isReady(){
-   return true;
-}
-
 //getters and setters
 void Gyro::setYPR(std::string YPR){
   this->YPR[0] = YPR[0];
@@ -116,4 +110,10 @@ void Gyro::setReverse(bool x, bool y, bool z){
   reverse[0] = x;
   reverse[1] = y;
   reverse[2] = z;
+}
+
+//placeholders
+
+bool Gyro::isReady(){
+   return true;
 }

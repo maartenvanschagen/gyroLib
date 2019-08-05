@@ -5,7 +5,6 @@
 #include <cmath>
 
 //TODO: support different callibration schemes, single-point calibration works quite poorly
-//TODO: add gyro offset angle vs thrust angle (manuel or automatic)
 
 
 double range(double val){

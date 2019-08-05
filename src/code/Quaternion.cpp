@@ -4,16 +4,18 @@
 
 #include <cmath>
 
-Quaternion::Quaternion(double wi, double xi, double yi, double zi){
-  w = wi; x = xi; y = yi; x = xi;
+Quaternion::Quaternion(double w, double x, double y, double z){
+  setValue(w, x, y, z);
+  Quaternion();
 }
 
 Quaternion::Quaternion(){
-  w = 1; x = 0; y = 0; x = 0;
+  
 }
 
 Quaternion::Quaternion(double yaw, double pitch, double roll){  //creates quaternion from euler angles
   setEuler(yaw, pitch, roll);
+  Quaternion();
 }
 
 Quaternion::~Quaternion(){
@@ -25,25 +27,19 @@ double* Quaternion::getValue(){
   return temp;
 }
 
-/*
-void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 microseconds  ,  euler in XYZ     ///Modified version of WIKIPEDIA code
-  // roll (x-axis rotation)
-  double sinr_cosp = +2.0 * (w * x + y * z);
-  double cosr_cosp = +1.0 - 2.0 * (x * x + y * y);
-  roll = atan2(sinr_cosp, cosr_cosp);
+void Quaternion::getValue(double& w, double& x, double& y, double& z){
+  w = this->w;
+  x = this->x;
+  y = this->y;
+  z = this->z;
+}
 
-  // pitch (y-axis rotation)
-  double sinp = +2.0 * (w * y - z * x);
-  if (fabs(sinp) >= 1)
-    pitch = copysign(M_PI / 2, sinp); // use 90 degrees if out of range
-  else
-    pitch = asin(sinp);
-
-  // yaw (z-axis rotation)
-  double siny_cosp = +2.0 * (w * z + x * y);
-  double cosy_cosp = +1.0 - 2.0 * (y * y + z * z);  
-  yaw = atan2(siny_cosp, cosy_cosp);
-}*/
+void Quaternion::setValue(double w, double x, double y, double z){
+  this->w = w;
+  this->x = x;
+  this->y = y;
+  this->z = z;
+}
 
 void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 microseconds  ,  euler in XYZ     ///Modified version of WIKIPEDIA code
   // roll (x-axis rotation)
@@ -72,12 +68,8 @@ void Quaternion::setEuler(double yaw, double pitch, double roll){   //euler in X
   x = cy * cp * sr - sy * sp * cr;
   y = sy * cp * sr + cy * sp * cr;
   z = sy * cp * cr - cy * sp * sr;
-/*w = (cy * cp * cr) + (sy * sp * sr);    //euler in ZYX
-  x = (sy * cp * cr) - (cy * sp * sr);
-  y = (cy * sp * cr) + (sy * cp * sr);
-  z = (cy * cp * sr) - (sy * sp * cr);*/
 }
-void Quaternion::setGyro(double gx, double gy, double gz){
+void Quaternion::setGyro(double gx, double gy, double gz){   //TODO: find better way then a sequence, there all simultainious anyway
   double cx = cos(gx/2), cy = cos(gy/2), cz = cos(gz/2);
   double sx = sin(gx/2), sy = sin(gy/2), sz = sin(gz/2);
 
@@ -89,11 +81,10 @@ void Quaternion::setGyro(double gx, double gy, double gz){
 
 void Quaternion::setMagnitude(double const dist){   //~40 microseconds
   double factor = dist/sqrt((w*w + x*x + y*y + z*z));
-  w *= factor;
-  x *= factor;
-  y *= factor;
-  z *= factor;
+  *this *= factor;
 }
+
+//operators
 
 Quaternion Quaternion::operator* (Quaternion const& q2){  //~80 microseconds
   Quaternion qnew = Quaternion();

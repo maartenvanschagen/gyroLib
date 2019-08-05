@@ -49,15 +49,15 @@ void loop() {
 
 
   printf("\tyaw\t\tpitch\t\troll\n");     //print euler angle info
-  //printf("\tw\t\tx\t\ty\t\tz\n");         //print quaternion info
+  printf("\tw\t\tx\t\ty\t\tz\n");         //print quaternion info
 
   printf("gyro:\t%f\t%f\t%f\n", gyroYaw * 180/M_PI, gyroPitch * 180/M_PI, gyroRoll * 180/M_PI);                         //print euler angles
-  //printf("gyro:\t%f\t%f\t%f\t%f\n", gyro.rotation.w, gyro.rotation.x, gyro.rotation.y, gyro.rotation.z);                //print quaternion
+  printf("gyro:\t%f\t%f\t%f\t%f\n", gyro.rotation.w, gyro.rotation.x, gyro.rotation.y, gyro.rotation.z);                //print quaternion
   //printf("gyro:\t%i\t%i\t%i\n", gyro.rawX, gyro.rawY, gyro.rawZ);                                                      //print raw data
 
   printf("accel:\t%f\t%f\t%f\n", yaw * 180/M_PI, pitch * 180/M_PI, roll * 180/M_PI);                                    //print converted to quaternion and back to Euler
   printf("accel:\t\t\t%f\t%f\n", accel.pitch * 180/M_PI, accel.roll * 180/M_PI);                                        //print euler angles
-  //printf("accel:\t%f\t%f\t%f\t%f\n", accelRotation.w, accelRotation.x, accelRotation.y, accelRotation.z);               //print quaternion
+  printf("accel:\t%f\t%f\t%f\t%f\n", accelRotation.w, accelRotation.x, accelRotation.y, accelRotation.z);               //print quaternion
   //printf("accel:\t%i\t%i\t%i\n", accel.rawX, accel.rawY, accel.rawZ);                                                   //print raw data
 
   printf("-------\n");
