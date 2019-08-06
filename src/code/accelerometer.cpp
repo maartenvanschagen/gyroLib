@@ -48,15 +48,28 @@ void Accelerometer::calcRotation(int rawX, int rawY, int rawZ, double& pitch, do
   pitch = -atan2(rawX, sqrt(rawY*rawY + rawZ*rawZ));          //from the internet
 }
 
+Euler Accelerometer::calcRotation(int rawX, int rawY, int rawZ){
+  Euler e;
+  e.roll = range(atan2(-rawY, rawZ)+M_PI);                      //from the internet
+  e.pitch = -atan2(rawX, sqrt(rawY*rawY + rawZ*rawZ));          //from the internet
+  return e;
+}
+
 void Accelerometer::calcRotation(double& pitch, double& roll){
   int rawX, rawY, rawZ;
   read(rawX, rawY, rawZ);
   calcRotation(rawX, rawY, rawZ, pitch, roll);
 }
 
+Euler Accelerometer::calcRotation(){
+  Euler e;
+  calcRotation(e.pitch, e.roll);
+  return e;
+}
+
 void Accelerometer::step(){
   if(isReady()){
-    calcRotation(pitch, roll);
+    calcRotation(rotation.pitch, rotation.roll);
   }
 }
 
@@ -80,14 +93,55 @@ void Accelerometer::setZeroReading(double zeroX, double zeroY, double zeroZ){
   this->zeroZ = zeroZ;
 }
 
+void Accelerometer::getZeroReading(double& zeroX, double& zeroY, double& zeroZ){
+  zeroX = this->zeroX;
+  zeroY = this->zeroY;
+  zeroZ = this->zeroZ;
+}
+
 void Accelerometer::setOffset(double offsetX, double offsetY, double offsetZ){
   this->offsetX = offsetX;
   this->offsetY = offsetY;
   this->offsetZ = offsetZ;
 }
 
+void Accelerometer::getOffset(double& offsetX, double& offsetY, double& offsetZ){
+  offsetX = this->offsetX;
+  offsetY = this->offsetY;
+  offsetZ = this->offsetZ;
+}
+
 Quaternion Accelerometer::getQuaternion(double yaw){
-  return Quaternion(yaw, pitch, roll);
+  return Quaternion(yaw, rotation.pitch, rotation.roll);
+}
+
+void Accelerometer::setQuaternion(Quaternion q){
+  double yaw;
+  q.getEuler(yaw, rotation.pitch, rotation.roll);
+}
+
+void Accelerometer::setEuler(double pitch, double roll){
+  rotation.pitch = pitch;
+  rotation.roll = roll;
+}
+
+void Accelerometer::setEuler(Euler e){
+  rotation = e;
+}
+
+void Accelerometer::getEuler(double& pitch, double& roll){
+  pitch = rotation.pitch;
+  roll = rotation.roll;
+}
+
+void Accelerometer::getEuler(double& yaw, double& pitch, double& roll){
+  yaw = 0;
+  pitch = rotation.pitch;
+  roll = rotation.roll;
+}
+
+Euler Accelerometer::getEuler(){
+  return rotation;
 }
 
 bool Accelerometer::isReady(){

@@ -18,6 +18,11 @@ Quaternion::Quaternion(double yaw, double pitch, double roll){  //creates quater
   Quaternion();
 }
 
+Quaternion::Quaternion(Euler e){
+  setEuler(e);
+  Quaternion();
+}
+
 Quaternion::~Quaternion(){
 }
 
@@ -60,6 +65,12 @@ void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 mic
   yaw = atan2(siny_cosp, cosy_cosp);
 }
 
+Euler Quaternion::getEuler(){
+  Euler e;
+  getEuler(e.yaw, e.pitch, e.roll);
+  return e;
+}
+
 void Quaternion::setEuler(double yaw, double pitch, double roll){   //euler in XYZ
   double cy = cos(yaw/2), cp = cos(pitch/2), cr = cos(roll/2);
   double sy = sin(yaw/2), sp = sin(pitch/2), sr = sin(roll/2);
@@ -69,6 +80,11 @@ void Quaternion::setEuler(double yaw, double pitch, double roll){   //euler in X
   y = sy * cp * sr + cy * sp * cr;
   z = sy * cp * cr - cy * sp * sr;
 }
+
+void Quaternion::setEuler(Euler e){
+  setEuler(e.yaw, e.pitch, e.roll);
+}
+
 void Quaternion::setGyro(double gx, double gy, double gz){   //TODO: find better way then a sequence, there all simultainious anyway
   double cx = cos(gx/2), cy = cos(gy/2), cz = cos(gz/2);
   double sx = sin(gx/2), sy = sin(gy/2), sz = sin(gz/2);

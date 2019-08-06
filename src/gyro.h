@@ -5,6 +5,8 @@
 #include <string>
 
 //TODO: fix public private protected
+//TODO: fully replace yaw pitch roll with Euler
+
 class Gyro {
   public:
     double offsetX, offsetY, offsetZ;
@@ -12,13 +14,9 @@ class Gyro {
     char YPR[3] = {'X', 'Y', 'Z'};
     bool reverse[3] = {false, false, false};
 
-    #ifdef DEBUG_GYROREADBUFFER
-      std::vector<Quaternion> rotationBuffer;
-    #endif
-
     void calcRotation(int rawX, int rawY, int rawZ, double& yaw, double& pitch, double& roll, long timePast);
     void calcRotation(double& yaw, double& pitch, double& roll, long timePast);
-    void transformMountRotation(double x, double y, double z, double& yaw, double& pitch, double& roll);
+    void transformRotation(double x, double y, double z, double& yaw, double& pitch, double& roll);
     void calibrate(double& offsetX, double& offsetY, double& offsetZ, int samplesize = 1000, bool changeOffset = true);
     void calibrate(int samplesize = 1000, bool changeOffset = true);
     void step();

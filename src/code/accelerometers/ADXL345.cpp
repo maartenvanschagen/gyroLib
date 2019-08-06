@@ -3,8 +3,6 @@
 #include "defines.h"
 #include "I2C.h"
 
-#include <freertos/FreeRTOS.h>
-
 void ADXL345::init(){
   //change settings
     //Set all three axes offsets to 0    because calibration is disabled
@@ -48,4 +46,10 @@ void ADXL345::setOffset(double offsetX, double offsetY, double offsetZ){
   I2C::writeRegister(ACCEL, OFSX, (uint8_t)(offsetX/4));
   I2C::writeRegister(ACCEL, OFSY, (uint8_t)(offsetY/4));
   I2C::writeRegister(ACCEL, OFSZ, (uint8_t)(offsetZ/4));
+}
+
+void ADXL345::getOffset(double& offsetX, double& offsetY, double& offsetZ){
+  offsetX = (double)I2C::getRegister(ACCEL, OFSX)*4;
+  offsetY = (double)I2C::getRegister(ACCEL, OFSY)*4;
+  offsetZ = (double)I2C::getRegister(ACCEL, OFSZ)*4;
 }

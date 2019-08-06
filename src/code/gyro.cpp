@@ -6,11 +6,6 @@
 
 #include <algorithm>
 
-#ifdef DEBUG_GYROREADBUFFER
-  #include <vector>
-#endif
-
-
 //functions
 
 void Gyro::calibrate(double& offsetX, double& offsetY, double& offsetZ, int samplesize, bool changeOffset){
@@ -44,11 +39,6 @@ void Gyro::step(){
     
     double rotationX, rotationY, rotationZ;
     calcRotation(rotationX, rotationY, rotationZ, timePast);
-
-    #ifdef DEBUG_GYROREADBUFFER
-      rotationBuffer.push_back(Quaternion(rotationX, rotationY, rotationZ));
-      if(rotationBuffer.size() > DEBUG_GYROREADBUFFER_MAXSIZE){rotationBuffer.erase(rotationBuffer.begin());}
-    #endif
     
     Quaternion rotationChange = Quaternion();
     rotationChange.setGyro(rotationX, rotationY, rotationZ);
@@ -57,7 +47,7 @@ void Gyro::step(){
   }
 }
 
-void Gyro::transformMountRotation(double x, double y, double z, double& yaw, double& pitch, double& roll){
+void Gyro::transformRotation(double x, double y, double z, double& yaw, double& pitch, double& roll){
   double val[3] = {x, y, z};
   
   for(short i = 0; i < 3; i++){

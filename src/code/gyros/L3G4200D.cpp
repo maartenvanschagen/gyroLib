@@ -42,5 +42,5 @@ void L3G4200D::calcRotation(int rawX, int rawY, int rawZ, double& yaw, double& p
   double rotationX = -(rawX - offsetX) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // (gyro trimmed) * sensitivity op 500 dps * timePast(s) * degToRad
   double rotationY = -(rawY - offsetY) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // all static numbers gets calculated by compiler
   double rotationZ =  (rawZ - offsetZ) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);
-  transformMountRotation(rotationX, rotationY, rotationZ, yaw, pitch, roll);
+  transformRotation(rotationX, rotationY, rotationZ, yaw, pitch, roll);
 }
