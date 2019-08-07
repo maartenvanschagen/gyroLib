@@ -58,7 +58,7 @@ void Gyro::transformRotation(double x, double y, double z, double& yaw, double& 
     switch(axesSwitched[i]){
       case 'X':
         yaw = val[i];
-        if(axesReversed[0]){printf("r");yaw=-yaw;}
+        if(axesReversed[0]){yaw=-yaw;}
         break;
       case 'Y':
         pitch = val[i];
