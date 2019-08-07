@@ -11,6 +11,3 @@ Euler::Euler(double yaw, double pitch, double roll){  //creates quaternion from 
   Euler();
 }
 
-Euler::~Euler(){
-}
-

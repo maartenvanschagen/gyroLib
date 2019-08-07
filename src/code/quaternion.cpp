@@ -1,4 +1,4 @@
-#include "Quaternion.h"
+#include "quaternion.h"
 
 #include "defines.h"
 
@@ -13,7 +13,7 @@ Quaternion::Quaternion(){
   
 }
 
-Quaternion::Quaternion(double yaw, double pitch, double roll){  //creates quaternion from euler angles
+Quaternion::Quaternion(double yaw, double pitch, double roll){
   setEuler(yaw, pitch, roll);
   Quaternion();
 }
@@ -100,6 +100,11 @@ void Quaternion::setMagnitude(double const dist){   //~40 microseconds
   *this *= factor;
 }
 
+double Quaternion::roughDistance(Quaternion q2){ //from https://math.stackexchange.com/questions/90081/quaternion-distance
+  double innerProduct = w * q2.w + x * q2.x + y * q2.y + z * q2.z;
+  return (1 - pow(innerProduct, 2));
+}
+
 //operators
 
 Quaternion Quaternion::operator* (Quaternion const& q2){  //~80 microseconds
@@ -168,4 +173,13 @@ Quaternion& Quaternion::operator-= (Quaternion const& q2){
   y -= q2.y;
   z -= q2.z;
   return *this;
+}
+
+Quaternion Quaternion::operator- (){
+  Quaternion qnew;
+  qnew.w = -w;
+  qnew.x = -x;
+  qnew.y = -y;
+  qnew.z = -z;
+  return qnew;
 }

@@ -1,7 +1,7 @@
 #ifndef ACCELEROMETER_H
 #define ACCELEROMETER_H
 
-#include "Quaternion.h"
+#include "quaternion.h"
 #include "euler.h"
 
 //TODO: fully replace yaw pitch roll with Euler
@@ -17,6 +17,8 @@ class Accelerometer {
     Euler calcRotation();
     Quaternion calcRotation(int rawX, int rawY, int rawZ, double yaw = 0);
     Quaternion calcRotation(double yaw = 0);
+
+    //setters and getters
     void setZeroReading(double zeroX, double zeroY, double zeroZ);
     void getZeroReading(double& zeroX, double& zeroY, double& zeroZ);
     Quaternion getQuaternion(double yaw = 0);

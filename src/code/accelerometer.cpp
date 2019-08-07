@@ -1,7 +1,7 @@
 #include "accelerometer.h"
 
 #include "defines.h"
-#include "Quaternion.h"
+#include "quaternion.h"
 #include <cmath>
 
 //TODO: support different callibration schemes, single-point calibration works quite poorly
