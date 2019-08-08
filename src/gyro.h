@@ -6,17 +6,15 @@
 #include "accelerometer.h"
 #include <string>
 
-//TODO: fully replace yaw pitch roll with Euler
+//TODO: fully replace yaw pitch roll with Euler, Euler doesn't seem correct for calcEuler
 
 class Gyro {
   public:
     void step();
     void calibrate(double& offsetX, double& offsetY, double& offsetZ, int samplesize = 1000, bool changeOffset = true);
     void calibrate(int samplesize = 1000, bool changeOffset = true);
-    void calcRotation(int rawX, int rawY, int rawZ, double& yaw, double& pitch, double& roll, long timePast);
-    Euler calcRotation(int rawX, int rawY, int rawZ, long timePast);
-    void calcRotation(double& yaw, double& pitch, double& roll, long timePast);
-    Euler calcRotation(long timePast);
+    Euler calcEuler(int rawX, int rawY, int rawZ, long timePast);
+    Euler calcEuler(long timePast);
     void transformRotation(double x, double y, double z, double& yaw, double& pitch, double& roll);
     void nudgeRotationTowards(Quaternion q);
     void nudgeRotationTowards(Accelerometer& a);
@@ -27,9 +25,7 @@ class Gyro {
     void setAxesReversed(bool x, bool y, bool z);
     void setOffset(double offsetX, double offsetY, double offsetZ);
     void getOffset(double& offsetX, double& offsetY, double& offsetZ);
-    void getEuler(double& yaw, double& pitch, double& roll);
     Euler getEuler();
-    void setEuler(double yaw, double pitch, double roll);
     void setEuler(Euler e);
     Quaternion getQuaternion();
     void setQuaternion(Quaternion q);

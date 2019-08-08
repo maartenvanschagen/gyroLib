@@ -11,22 +11,17 @@ class Accelerometer {
     void step();
     void calibrate(int& rawX, int& rawY, int& rawZ, int samplesize = 1000, bool changeOffset = true);
     void calibrate(int samplesize = 1000, bool changeOffset = true);
-    void calcRotation(int rawX, int rawY, int rawZ, double& pitch, double& roll);
-    Euler calcRotation(int rawX, int rawY, int rawZ);
-    void calcRotation(double& pitch, double& roll);
-    Euler calcRotation();
-    Quaternion calcRotation(int rawX, int rawY, int rawZ, double yaw = 0);
-    Quaternion calcRotation(double yaw = 0);
+    Euler calcEuler(int rawX, int rawY, int rawZ);
+    Euler calcEuler();
+    Quaternion calcQuaternion(int rawX, int rawY, int rawZ, double yaw = 0);
+    Quaternion calcQuaternion(double yaw = 0);
 
     //setters and getters
     void setZeroReading(double zeroX, double zeroY, double zeroZ);
     void getZeroReading(double& zeroX, double& zeroY, double& zeroZ);
     Quaternion getQuaternion(double yaw = 0);
     void setQuaternion(Quaternion q);
-    void setEuler(double pitch, double roll);
     void setEuler(Euler e);
-    void getEuler(double& pitch, double& roll);
-    void getEuler(double& yaw, double& pitch, double& roll);
     Euler getEuler();
 
     //not necessary to override

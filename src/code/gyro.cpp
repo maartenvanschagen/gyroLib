@@ -37,11 +37,10 @@ void Gyro::step(){
     timePast = wrapper::getMicros() - lastMicros;
     lastMicros = wrapper::getMicros();
     
-    double rotationX, rotationY, rotationZ;
-    calcRotation(rotationX, rotationY, rotationZ, timePast);
+    Euler e = calcEuler(timePast);
     
     Quaternion rotationChange = Quaternion();
-    rotationChange.setGyro(rotationX, rotationY, rotationZ);
+    rotationChange.setGyro(e.yaw, e.pitch, e.roll);
     rotation *= rotationChange;
     rotation.setMagnitude(1);
 
@@ -72,10 +71,6 @@ void Gyro::transformRotation(double x, double y, double z, double& yaw, double& 
   }
 }
 
-void Gyro::getEuler(double& yaw, double& pitch, double& roll){
-  rotation.getEuler(yaw, pitch, roll);
-}
-
 Quaternion Gyro::getQuaternion(){
   return rotation;
 }
@@ -91,26 +86,16 @@ void Gyro::calibrate(int samplesize, bool changeOffset){
   calibrate(offsetX, offsetY, offsetZ, samplesize, changeOffset);
 }
 
-void Gyro::calcRotation(int rawX, int rawY, int rawZ, double& yaw, double& pitch, double& roll, long timePast){
-  calcRotation(rawX, rawY, rawZ, yaw, pitch, roll, offsetX, offsetY, offsetZ, timePast);
-}
-
-Euler Gyro::calcRotation(int rawX, int rawY, int rawZ, long timePast){
+Euler Gyro::calcEuler(int rawX, int rawY, int rawZ, long timePast){
   Euler e;
-  calcRotation(rawX, rawY, rawZ, e.yaw, e.pitch, e.roll, timePast);
+  calcRotation(rawX, rawY, rawZ, e.yaw, e.pitch, e.roll, offsetX, offsetY, offsetZ, timePast);
   return e;
 }
 
-void Gyro::calcRotation(double& yaw, double& pitch, double& roll, long timePast){
+Euler Gyro::calcEuler(long timePast){
   int rawX, rawY, rawZ;
   read(rawX, rawY, rawZ);
-  calcRotation(rawX, rawY, rawZ, yaw, pitch, roll, offsetX, offsetY, offsetZ, timePast);
-}
-
-Euler Gyro::calcRotation(long timePast){
-  Euler e;
-  calcRotation(e.yaw, e.pitch, e.roll, timePast);
-  return e;
+  return calcEuler(rawX, rawY, rawZ, timePast);
 }
 
 void Gyro::nudgeRotationTowards(Quaternion q){
@@ -121,7 +106,7 @@ void Gyro::nudgeRotationTowards(Quaternion q){
 }
 
 void Gyro::nudgeRotationTowards(Accelerometer& a){
-  nudgeRotationTowards(a.getQuaternion());
+  nudgeRotationTowards(a.getQuaternion(rotation.getEuler().yaw));
 }
 
 //getters and setters
