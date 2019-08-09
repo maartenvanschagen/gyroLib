@@ -8,28 +8,26 @@
 
 //functions
 
-void Gyro::calibrate(double& offsetX, double& offsetY, double& offsetZ, int samplesize, bool changeOffset){
-  long totalX = 0, totalY = 0, totalZ = 0;
-  int rawX, rawY, rawZ;
+Vector3<double> Gyro::calibrate(int samplesize, bool changeOffset){
+  Vector3<int> total;
+  Vector3<int> raw;
 
   for(int i = 0; i < samplesize;){
     if(isReady()){
       i++;
-      read(rawX, rawY, rawZ);
-      totalX += rawX;
-      totalY += rawY;
-      totalZ += rawZ;
+      raw = read();
+      total += raw;
     }
   }
-  offsetX = (totalX / samplesize);
-  offsetY = (totalY / samplesize);
-  offsetZ = (totalZ / samplesize);
+  offset.x = (total.x / samplesize);
+  offset.y = (total.y / samplesize);
+  offset.z = (total.z / samplesize);
   
   if(changeOffset){
-    this->offsetX = offsetX;
-    this->offsetY = offsetY;
-    this->offsetZ = offsetZ;
+    this->offset = offset;
   }
+
+  return offset;
 }
 
 void Gyro::step(){
@@ -37,10 +35,10 @@ void Gyro::step(){
     timePast = wrapper::getMicros() - lastMicros;
     lastMicros = wrapper::getMicros();
     
-    Euler e = calcEuler(timePast);
+    Vector3<double> rot = calcRotation(timePast);
     
     Quaternion rotationChange = Quaternion();
-    rotationChange.setGyro(e.yaw, e.pitch, e.roll);
+    rotationChange.setGyro(rot.x, rot.y, rot.z);
     rotation *= rotationChange;
     rotation.setMagnitude(1);
 
@@ -50,8 +48,8 @@ void Gyro::step(){
   }
 }
 
-void Gyro::transformRotation(double x, double y, double z, double& yaw, double& pitch, double& roll){
-  double val[3] = {x, y, z};
+void Gyro::transformRotation(Vector3<double> raw, double& yaw, double& pitch, double& roll){
+  double val[3] = {raw.x, raw.y, raw.z};
   
   for(short i = 0; i < 3; i++){
     switch(axesSwitched[i]){
@@ -81,21 +79,15 @@ void Gyro::setQuaternion(Quaternion q){
 
 //overloads
 
-void Gyro::calibrate(int samplesize, bool changeOffset){
-  double offsetX, offsetY, offsetZ;
-  calibrate(offsetX, offsetY, offsetZ, samplesize, changeOffset);
+Vector3<double> Gyro::calcRotation(Vector3<int> raw, long timePast){
+  Vector3<double> rotation;
+  calcRotation(raw.x, raw.y, raw.z, rotation.x, rotation.y, rotation.z, offset.x, offset.y, offset.z, timePast);
+  return rotation;
 }
 
-Euler Gyro::calcEuler(int rawX, int rawY, int rawZ, long timePast){
-  Euler e;
-  calcRotation(rawX, rawY, rawZ, e.yaw, e.pitch, e.roll, offsetX, offsetY, offsetZ, timePast);
-  return e;
-}
-
-Euler Gyro::calcEuler(long timePast){
-  int rawX, rawY, rawZ;
-  read(rawX, rawY, rawZ);
-  return calcEuler(rawX, rawY, rawZ, timePast);
+Vector3<double> Gyro::calcRotation(long timePast){
+  Vector3<int> raw = read();
+  return calcRotation(raw, timePast);
 }
 
 void Gyro::nudgeRotationTowards(Quaternion q){
@@ -126,16 +118,12 @@ void Gyro::setAxesReversed(bool x, bool y, bool z){
   axesReversed[2] = z;
 }
 
-void Gyro::setOffset(double offsetX, double offsetY, double offsetZ){
-  this->offsetX = offsetX;
-  this->offsetY = offsetY;
-  this->offsetZ = offsetZ;
+void Gyro::setOffset(Vector3<double> offset){
+  this->offset = offset;
 }
 
-void Gyro::getOffset(double& offsetX, double& offsetY, double& offsetZ){
-  offsetX = this->offsetX;
-  offsetY = this->offsetY;
-  offsetZ = this->offsetZ;
+Vector3<double> Gyro::getOffset(){
+  return offset;
 }
 
 void Gyro::setEuler(Euler e){

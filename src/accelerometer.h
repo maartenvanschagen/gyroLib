@@ -4,7 +4,7 @@
 #include "quaternion.h"
 #include "euler.h"
 
-//TODO: fully replace yaw pitch roll with Euler
+//TODO: fully replace yaw pitch roll with Euler and fully integrate Vector3
 
 class Accelerometer {
   public:    

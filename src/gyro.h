@@ -3,19 +3,20 @@
 
 #include "quaternion.h"
 #include "euler.h"
+#include "vector3.h"
 #include "accelerometer.h"
 #include <string>
 
-//TODO: fully replace yaw pitch roll with Euler, Euler doesn't seem correct for calcEuler
+//TODO: fully replace yaw pitch roll with Euler and fully integrate Vector3
+
 
 class Gyro {
   public:
     void step();
-    void calibrate(double& offsetX, double& offsetY, double& offsetZ, int samplesize = 1000, bool changeOffset = true);
-    void calibrate(int samplesize = 1000, bool changeOffset = true);
-    Euler calcEuler(int rawX, int rawY, int rawZ, long timePast);
-    Euler calcEuler(long timePast);
-    void transformRotation(double x, double y, double z, double& yaw, double& pitch, double& roll);
+    Vector3<double> calibrate(int samplesize = 1000, bool changeOffset = true);
+    Vector3<double> calcRotation(Vector3<int> raw, long timePast);
+    Vector3<double> calcRotation(long timePast);
+    void transformRotation(Vector3<double> raw, double& yaw, double& pitch, double& roll);
     void nudgeRotationTowards(Quaternion q);
     void nudgeRotationTowards(Accelerometer& a);
 
@@ -23,8 +24,8 @@ class Gyro {
     void setAxesSwitched(std::string setAxesSwitched);
     void setAxesSwitched(char xAxis, char yAxis, char zAxis);
     void setAxesReversed(bool x, bool y, bool z);
-    void setOffset(double offsetX, double offsetY, double offsetZ);
-    void getOffset(double& offsetX, double& offsetY, double& offsetZ);
+    void setOffset(Vector3<double> offset);
+    Vector3<double> getOffset();
     Euler getEuler();
     void setEuler(Euler e);
     Quaternion getQuaternion();
@@ -36,7 +37,7 @@ class Gyro {
     virtual bool isReady();
     //necessary to override
     virtual void init() = 0;
-    virtual void read(int& rawX, int& rawY, int& rawZ) = 0; //is int for compatibility
+    virtual Vector3<int> read() = 0; //is int for compatibility
     virtual void calcRotation(int rawX, int rawY, int rawZ, double& rotationX, double& rotationY, double& rotationZ, double offsetX, double offsetY, double offsetZ, long timePast) = 0;
   private:
     long lastMicros;
@@ -44,7 +45,7 @@ class Gyro {
     Quaternion rotation = Quaternion(1, 0, 0, 0);
     char axesSwitched[3] = {'X', 'Y', 'Z'};
     bool axesReversed[3] = {false, false, false};
-    double offsetX, offsetY, offsetZ;
+    Vector3<double> offset;
     Accelerometer* accelerometer = NULL;
 };
 
