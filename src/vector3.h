@@ -1,7 +1,7 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
-template<class T> 
+template<class T = double> 
 struct Vector3{
   T x = 0, y = 0, z = 0;
 
@@ -30,5 +30,28 @@ struct Vector3{
     return *this;
   }
 
+  Vector3<T> operator- (Vector3<T> const& v2){
+    Vector3<T> vnew = Vector3<T>();
+    vnew.x = x - v2.x;
+    vnew.y = y - v2.y;
+    vnew.z = z - v2.z;
+    return vnew;
+  }
+
+  Vector3<T>& operator-= (Vector3<T> const& v2){
+    x -= v2.x;
+    y -= v2.y;
+    z -= v2.z;
+    return *this;
+  }
+
 };
+
+//shorthand definitions
+typedef Vector3<double> Vector3d;
+typedef Vector3<float> Vector3f;
+typedef Vector3<int> Vector3i;
+typedef Vector3<long> Vector3l;
+typedef Vector3<short> Vector3s;
+
 #endif

@@ -25,10 +25,10 @@ void L3G4200D::init(){                                          //TODO: make set
   I2C::writeRegister(GYRO, CTRL_REG1, 0b11101111); //turn on 800Hz, 50Hz cut-off, X, Y, Z enabled
 }
 
-Vector3<int> L3G4200D::read(){ // ~280 microseconds
+Vector3i L3G4200D::read(){ // ~280 microseconds
   uint8_t gyroData[6];
   I2C::getRegister(GYRO, OUT_X_L | (0b10000000), &gyroData[0], 6);//put data in gyroData with pointer address  -  incement the address after read register (with 0b10000000)
-  Vector3<int> raw;
+  Vector3i raw;
   raw.x = (short)(gyroData[1] << 8 | gyroData[0]); //OUT_X_H .. OUT_X_L     //shorts are to handle negatives (last bit)
   raw.y = (short)(gyroData[3] << 8 | gyroData[2]); //OUT_Y_H .. OUT_Y_L
   raw.z = (short)(gyroData[5] << 8 | gyroData[4]); //OUT_Z_H .. OUT_Z_L
@@ -40,10 +40,10 @@ bool L3G4200D::isReady(){
                                                                             // TODO: use STATUS_REG 7 to check if data has been overwritten and if so freq must be too high so set or lower
 }
 
-void L3G4200D::calcRotation(int rawX, int rawY, int rawZ, double& outX, double& outY, double& outZ, double offsetX, double offsetY, double offsetZ, long timePast){ // ~15 microseconds
-  Vector3<double> rotation;
-  rotation.x = -(rawX - offsetX) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // (gyro trimmed) * sensitivity op 500 dps * timePast(s) * degToRad
-  rotation.y = -(rawY - offsetY) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // all static numbers gets calculated by compiler
-  rotation.z =  (rawZ - offsetZ) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);
-  transformRotation(rotation, outX, outY, outZ);
+Vector3d L3G4200D::calcRotation(Vector3i raw, Vector3d offset, long timePast){ // ~15 microseconds
+  Vector3d rotation;
+  rotation.x = -(raw.x - offset.x) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // (gyro trimmed) * sensitivity op 500 dps * timePast(s) * degToRad
+  rotation.y = -(raw.y - offset.y) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // all static numbers gets calculated by compiler
+  rotation.z =  (raw.z - offset.z) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);
+  return transformRotation(rotation);
 }

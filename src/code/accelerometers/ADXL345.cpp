@@ -34,22 +34,26 @@ bool ADXL345::isReady(){
   return ((I2C::getRegister(ACCEL, INT_SOURCE) & 0b10000000) == 0b10000000);  //check if data is ready
 }
 
-void ADXL345::read(int& rawX, int& rawY, int& rawZ){
+Vector3i ADXL345::read(){
+  Vector3i raw;
   uint8_t accelData[6];
   I2C::getRegister(ACCEL, DATAX0, &accelData[0], 6);//put data in accelData with pointer address, increment is automatic
-  rawX = (short)(accelData[1] << 8 | accelData[0]); //DATAX1 .. DATAX0    //shorts are to handle negatives (last bit)
-  rawY = (short)(accelData[3] << 8 | accelData[2]); //DATAY1 .. DATAY0
-  rawZ = (short)(accelData[5] << 8 | accelData[4]); //DATAZ1 .. DATAZ0
+  raw.x = (short)(accelData[1] << 8 | accelData[0]); //DATAX1 .. DATAX0    //shorts are to handle negatives (last bit)
+  raw.y = (short)(accelData[3] << 8 | accelData[2]); //DATAY1 .. DATAY0
+  raw.z = (short)(accelData[5] << 8 | accelData[4]); //DATAZ1 .. DATAZ0
+  return raw;
 }
 
-void ADXL345::setOffset(double offsetX, double offsetY, double offsetZ){
-  I2C::writeRegister(ACCEL, OFSX, (uint8_t)(offsetX/4));
-  I2C::writeRegister(ACCEL, OFSY, (uint8_t)(offsetY/4));
-  I2C::writeRegister(ACCEL, OFSZ, (uint8_t)(offsetZ/4));
+void ADXL345::setOffset(Vector3d offset){
+  I2C::writeRegister(ACCEL, OFSX, (uint8_t)(offset.x/4));
+  I2C::writeRegister(ACCEL, OFSY, (uint8_t)(offset.y/4));
+  I2C::writeRegister(ACCEL, OFSZ, (uint8_t)(offset.z/4));
 }
 
-void ADXL345::getOffset(double& offsetX, double& offsetY, double& offsetZ){
-  offsetX = (double)I2C::getRegister(ACCEL, OFSX)*4;
-  offsetY = (double)I2C::getRegister(ACCEL, OFSY)*4;
-  offsetZ = (double)I2C::getRegister(ACCEL, OFSZ)*4;
+Vector3d ADXL345::getOffset(){
+  Vector3d offset;
+  offset.x = (double)I2C::getRegister(ACCEL, OFSX)*4;
+  offset.y = (double)I2C::getRegister(ACCEL, OFSY)*4;
+  offset.z = (double)I2C::getRegister(ACCEL, OFSZ)*4;
+  return offset;
 }
