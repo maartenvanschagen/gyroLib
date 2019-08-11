@@ -17,9 +17,11 @@ void loop2( void * );
 
 extern "C" void app_main() {
   I2C::init();
+  accel.setAxesSwitched("XYZ");
+  accel.setAxesReversed(true, true, false);
   accel.init();
   gyro.setAxesSwitched("XYZ");
-  gyro.setAxesReversed(false, false, false);
+  gyro.setAxesReversed(true, true, false);
   gyro.setAccelerometer(&accel);
   gyro.init();
 

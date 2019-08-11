@@ -37,9 +37,10 @@ Vector3d Accelerometer::calibrate(int samplesize, bool changeOffset){
 }
 
 Euler Accelerometer::calcEuler(Vector3i raw){
+  Vector3d translated = transformRotation(Vector3d(raw.x, raw.y, raw.z));
   Euler e;
-  e.roll = range(atan2(-raw.y, raw.z)+M_PI);                      //from the internet
-  e.pitch = -atan2(raw.x, sqrt(raw.y*raw.y + raw.z*raw.z));       //from the internet
+  e.roll = range(atan2(-translated.y, translated.z)+M_PI);                      //from the internet
+  e.pitch = -atan2(translated.x, sqrt(translated.y*translated.y + translated.z*translated.z));       //from the internet
   return e;
 }
 
@@ -63,6 +64,29 @@ void Accelerometer::step(double yaw){
   if(isReady()){
     rotation = calcEuler(yaw);
   }
+}
+
+Vector3d Accelerometer::transformRotation(Vector3d raw){
+  double val[3] = {raw.x, raw.y, raw.z};
+  Vector3d result;
+  
+  for(short i = 0; i < 3; i++){
+    switch(axesSwitched[i]){
+      case 'X':
+        result.x = val[i];
+        if(axesReversed[0]){result.x=-result.x;}
+        break;
+      case 'Y':
+        result.y = val[i];
+        if(axesReversed[1]){result.y=-result.y;}
+        break;
+      case 'Z':
+        result.z = val[i];
+        if(axesReversed[2]){result.z=-result.z;}
+        break;
+    }
+  }
+  return result;
 }
 
 Quaternion Accelerometer::calcQuaternion(Vector3i raw, double yaw){
@@ -123,6 +147,22 @@ Euler Accelerometer::getEuler(){
 
 void Accelerometer::setYaw(double yaw){
   rotation.yaw = yaw;
+}
+
+void Accelerometer::setAxesSwitched(std::string axesSwitched){
+  setAxesSwitched(axesSwitched[0], axesSwitched[1], axesSwitched[2]);
+}
+
+void Accelerometer::setAxesSwitched(char xAxis, char yAxis, char zAxis){
+  this->axesSwitched[0] = xAxis;
+  this->axesSwitched[1] = yAxis;
+  this->axesSwitched[2] = zAxis;
+}
+
+void Accelerometer::setAxesReversed(bool x, bool y, bool z){
+  axesReversed[0] = x;
+  axesReversed[1] = y;
+  axesReversed[2] = z;
 }
 
 bool Accelerometer::isReady(){

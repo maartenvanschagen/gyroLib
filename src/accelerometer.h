@@ -4,11 +4,10 @@
 #include "quaternion.h"
 #include "euler.h"
 #include "vector3.h"
-
-//TODO: implement rotation and translation of sensor
+#include <string>
 
 class Accelerometer {
-  public:    
+  public:
     void step(double yaw = 0);
     Vector3d calibrate(int samplesize = 1000, bool changeOffset = true);
     Euler calcEuler(Vector3i raw);
@@ -17,6 +16,7 @@ class Accelerometer {
     Euler calcEuler(double yaw);
     Quaternion calcQuaternion(Vector3i raw, double yaw = 0);
     Quaternion calcQuaternion(double yaw = 0);
+    Vector3d transformRotation(Vector3d raw);
 
     //setters and getters
     void setZeroReading(double zeroX, double zeroY, double zeroZ);
@@ -29,6 +29,9 @@ class Accelerometer {
     Euler getEuler();
     void setYaw(double yaw);
     void setOffset(double offsetX, double offsetY, double offsetZ);
+    void setAxesSwitched(std::string setAxesSwitched); //do
+    void setAxesSwitched(char xAxis, char yAxis, char zAxis); //do
+    void setAxesReversed(bool x, bool y, bool z);  //do
 
     //not necessary to override
     virtual bool isReady();
@@ -39,6 +42,8 @@ class Accelerometer {
     virtual Vector3i read() = 0;  //don't forget to include the offset when reading
   private:
     Euler rotation = Euler();
+    char axesSwitched[3] = {'X', 'Y', 'Z'};
+    bool axesReversed[3] = {false, false, false};
     Vector3d offset;
     Vector3d zero = Vector3d(0, 0, -255);
 };
