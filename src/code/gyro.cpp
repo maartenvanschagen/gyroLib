@@ -11,6 +11,7 @@
 Vector3d Gyro::calibrate(int samplesize, bool changeOffset){
   Vector3i total;
   Vector3i raw;
+  Vector3d offset;
 
   for(int i = 0; i < samplesize;){
     if(isReady()){
@@ -123,9 +124,7 @@ void Gyro::setOffset(Vector3d offset){
 }
 
 void Gyro::setOffset(double offsetX, double offsetY, double offsetZ){
-  this->offset.x = offsetX;
-  this->offset.y = offsetY;
-  this->offset.z = offsetZ;
+  setOffset(Vector3d(offsetX, offsetY, offsetZ));
 }
 
 Vector3d Gyro::getOffset(){

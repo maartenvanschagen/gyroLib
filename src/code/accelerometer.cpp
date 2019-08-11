@@ -11,7 +11,7 @@ double range(double val){
   return fmod((val + M_PI), (2 * M_PI)) - M_PI;
 }
 
-Vector3i Accelerometer::calibrate(int samplesize, bool changeOffset){
+Vector3d Accelerometer::calibrate(int samplesize, bool changeOffset){
   Vector3i accelTotal = Vector3i(0, 0, 0);
   Vector3i accelData;
 
@@ -24,7 +24,7 @@ Vector3i Accelerometer::calibrate(int samplesize, bool changeOffset){
     accelTotal += accelData;
   }
 
-  Vector3i raw;
+  Vector3d raw;
   raw.x = accelTotal.x / samplesize;
   raw.y = accelTotal.y / samplesize;
   raw.z = accelTotal.z / samplesize;

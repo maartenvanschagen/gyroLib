@@ -5,10 +5,12 @@
 #include "euler.h"
 #include "vector3.h"
 
+//TODO: implement rotation and translation of sensor
+
 class Accelerometer {
   public:    
     void step(double yaw = 0);
-    Vector3i calibrate(int samplesize = 1000, bool changeOffset = true);
+    Vector3d calibrate(int samplesize = 1000, bool changeOffset = true);
     Euler calcEuler(Vector3i raw);
     Euler calcEuler();
     Euler calcEuler(Vector3i raw, double yaw);
