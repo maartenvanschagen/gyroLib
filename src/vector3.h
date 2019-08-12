@@ -11,6 +11,7 @@ struct Vector3{
     this->z = z;
     Vector3();
   }
+  
   Vector3(){
 
   }

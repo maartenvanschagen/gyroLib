@@ -9,10 +9,6 @@ Quaternion::Quaternion(double w, double x, double y, double z){
   Quaternion();
 }
 
-Quaternion::Quaternion(){
-  
-}
-
 Quaternion::Quaternion(double yaw, double pitch, double roll){
   setEuler(yaw, pitch, roll);
   Quaternion();
@@ -21,6 +17,10 @@ Quaternion::Quaternion(double yaw, double pitch, double roll){
 Quaternion::Quaternion(Euler e){
   setEuler(e);
   Quaternion();
+}
+
+Quaternion::Quaternion(){
+  
 }
 
 Quaternion::~Quaternion(){

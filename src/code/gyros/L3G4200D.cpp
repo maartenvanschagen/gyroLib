@@ -35,15 +35,15 @@ Vector3i L3G4200D::read(){ // ~280 microseconds
   return raw;
 }
 
-bool L3G4200D::isReady(){
-  return ((I2C::getRegister(GYRO, STATUS_REG) & 0b00001000) == 0b00001000); // check if data is ready
-                                                                            // TODO: use STATUS_REG 7 to check if data has been overwritten and if so freq must be too high so set or lower
-}
-
 Vector3d L3G4200D::calcRotation(Vector3i raw, Vector3d offset, long timePast){ // ~15 microseconds
   Vector3d rotation;
   rotation.x = -(raw.x - offset.x) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // (gyro trimmed) * sensitivity op 500 dps * timePast(s) * degToRad
   rotation.y = -(raw.y - offset.y) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);    // all static numbers gets calculated by compiler
   rotation.z =  (raw.z - offset.z) * 0.0175 * (timePast / 1000000.0) * (M_PI/180.0);
   return transformRotation(rotation);
+}
+
+bool L3G4200D::isReady(){
+  return ((I2C::getRegister(GYRO, STATUS_REG) & 0b00001000) == 0b00001000); // check if data is ready
+                                                                            // TODO: use STATUS_REG 7 to check if data has been overwritten and if so freq must be too high so set or lower
 }

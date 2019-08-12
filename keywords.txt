@@ -15,33 +15,80 @@ Compass	KEYWORD1
 
 Quaternion	KEYWORD1
 
+Euler	KEYWORD1
+
+Vector3	KEYWORD1
+Vector3d	KEYWORD1
+Vector3f	KEYWORD1
+Vector3i	KEYWORD1
+Vector3l	KEYWORD1
+Vector3s	KEYWORD1
+
+I2C	KEYWORD1
+
 #-----------------------------------
 # Function	KEYWORD2
 #-----------------------------------
 
 ##Gyro
-calcRotation	KEYWORD2
-calibrate	KEYWORD2
 step	KEYWORD2
-getRotation	KEYWORD2
+calibrate	KEYWORD2
+calcRotation	KEYWORD2
+transformRotation	KEYWORD2
+nudgeRotationTowards	KEYWORD2
+
+setAxesSwitched	KEYWORD2
+setAxesReversed	KEYWORD2
+setOffset	KEYWORD2
+getEuler	KEYWORD2
+setEuler	KEYWORD2
+getQuaternion	KEYWORD2
+setQuaternion	KEYWORD2
+getAccelerometer	KEYWORD2
+setAccelerometer	KEYWORD2
 isReady	KEYWORD2
+getOffset	KEYWORD2
+setOffset	KEYWORD2
 init	KEYWORD2
 read	KEYWORD2
+calcRotation	KEYWORD2
+
 
 ##Accelerometer
 step	KEYWORD2
-read	KEYWORD2
 calibrate	KEYWORD2
-calcRotation	KEYWORD2
+calcEuler	KEYWORD2
+calcQuaternion	KEYWORD2
+transformRotation	KEYWORD2
+getZeroReading	KEYWORD2
+setZeroReading	KEYWORD2
+setAxesSwitched	KEYWORD2
+setOffset	KEYWORD2
+getEuler	KEYWORD2
+setEuler	KEYWORD2
+getQuaternion	KEYWORD2
+setQuaternion	KEYWORD2
+setYaw	KEYWORD2
 isReady	KEYWORD2
+getOffset	KEYWORD2
 setOffset	KEYWORD2
 init	KEYWORD2
 read	KEYWORD2
 
+
 ##Quaternion
+w	KEYWORD2
+x	KEYWORD2
+y	KEYWORD2
+z	KEYWORD2
 getValue	KEYWORD2
+setValue	KEYWORD2
 getEuler	KEYWORD2
+setEuler	KEYWORD2
+setGyro	KEYWORD2
 setMagnitude	KEYWORD2
+roughDistance	KEYWORD2
+
 
 ##I2C
 init	KEYWORD2

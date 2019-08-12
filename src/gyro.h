@@ -17,7 +17,7 @@ class Gyro {
     void nudgeRotationTowards(Quaternion q);
     void nudgeRotationTowards(Accelerometer& a);
 
-    //setters and getters
+    //getters and setters
     void setAxesSwitched(std::string setAxesSwitched);
     void setAxesSwitched(char xAxis, char yAxis, char zAxis);
     void setAxesReversed(bool x, bool y, bool z);
@@ -26,25 +26,26 @@ class Gyro {
     void setEuler(Euler e);
     Quaternion getQuaternion();
     void setQuaternion(Quaternion q);
-    void setAccelerometer(Accelerometer* a);
     Accelerometer* getAccelerometer();
+    void setAccelerometer(Accelerometer* a);
 
     //not necessary to override
     virtual bool isReady();
-    virtual void setOffset(Vector3d offset);
     virtual Vector3d getOffset();
+    virtual void setOffset(Vector3d offset);
     //necessary to override
     virtual void init() = 0;
     virtual Vector3i read() = 0; //is int for compatibility
     virtual Vector3d calcRotation(Vector3i raw, Vector3d offset, long timePast) = 0;
   private:
-    long lastMicros;
-    int timePast = 0;
     Quaternion rotation = Quaternion(1, 0, 0, 0);
-    char axesSwitched[3] = {'X', 'Y', 'Z'};
-    bool axesReversed[3] = {false, false, false};
     Vector3d offset;
     Accelerometer* accelerometer = NULL;
+    char axesSwitched[3] = {'X', 'Y', 'Z'};
+    bool axesReversed[3] = {false, false, false};
+    //for step loop
+    long lastMicros;
+    int timePast = 0;
 };
 
 #endif

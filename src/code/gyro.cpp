@@ -8,6 +8,24 @@
 
 //functions
 
+void Gyro::step(){
+  if(isReady()){
+    timePast = wrapper::getMicros() - lastMicros;
+    lastMicros = wrapper::getMicros();
+    
+    Vector3d rot = calcRotation(timePast);
+    
+    Quaternion rotationChange = Quaternion();
+    rotationChange.setGyro(rot.x, rot.y, rot.z);
+    rotation *= rotationChange;
+    rotation.setMagnitude(1);
+
+    if(accelerometer != NULL){
+      nudgeRotationTowards(*accelerometer);
+    }
+  }
+}
+
 Vector3d Gyro::calibrate(int samplesize, bool changeOffset){
   Vector3i total;
   Vector3i raw;
@@ -31,22 +49,13 @@ Vector3d Gyro::calibrate(int samplesize, bool changeOffset){
   return offset;
 }
 
-void Gyro::step(){
-  if(isReady()){
-    timePast = wrapper::getMicros() - lastMicros;
-    lastMicros = wrapper::getMicros();
-    
-    Vector3d rot = calcRotation(timePast);
-    
-    Quaternion rotationChange = Quaternion();
-    rotationChange.setGyro(rot.x, rot.y, rot.z);
-    rotation *= rotationChange;
-    rotation.setMagnitude(1);
+Vector3d Gyro::calcRotation(Vector3i raw, long timePast){
+  return calcRotation(raw, offset, timePast);
+}
 
-    if(accelerometer != NULL){
-      nudgeRotationTowards(*accelerometer);
-    }
-  }
+Vector3d Gyro::calcRotation(long timePast){
+  Vector3i raw = read();
+  return calcRotation(raw, timePast);
 }
 
 Vector3d Gyro::transformRotation(Vector3d raw){
@@ -72,25 +81,6 @@ Vector3d Gyro::transformRotation(Vector3d raw){
   return result;
 }
 
-Quaternion Gyro::getQuaternion(){
-  return rotation;
-}
-
-void Gyro::setQuaternion(Quaternion q){
-  rotation = q;
-}
-
-//overloads
-
-Vector3d Gyro::calcRotation(Vector3i raw, long timePast){
-  return calcRotation(raw, offset, timePast);
-}
-
-Vector3d Gyro::calcRotation(long timePast){
-  Vector3i raw = read();
-  return calcRotation(raw, timePast);
-}
-
 void Gyro::nudgeRotationTowards(Quaternion q){
   double reverseFactor = abs(rotation.w - q.w) + abs(rotation.x - q.x) + abs(rotation.y - q.y) + abs(rotation.z - q.z);
   if(reverseFactor > 0.5) q = -q;  //TODO: find a more scientific method of doing this
@@ -103,6 +93,7 @@ void Gyro::nudgeRotationTowards(Accelerometer& a){
 }
 
 //getters and setters
+
 void Gyro::setAxesSwitched(std::string axesSwitched){
   setAxesSwitched(axesSwitched[0], axesSwitched[1], axesSwitched[2]);
 }
@@ -119,36 +110,44 @@ void Gyro::setAxesReversed(bool x, bool y, bool z){
   axesReversed[2] = z;
 }
 
-void Gyro::setOffset(Vector3d offset){
-  this->offset = offset;
-}
-
 void Gyro::setOffset(double offsetX, double offsetY, double offsetZ){
   setOffset(Vector3d(offsetX, offsetY, offsetZ));
-}
-
-Vector3d Gyro::getOffset(){
-  return offset;
-}
-
-void Gyro::setEuler(Euler e){
-  rotation.setEuler(e);
 }
 
 Euler Gyro::getEuler(){
   return rotation.getEuler();
 }
 
-void Gyro::setAccelerometer(Accelerometer* a){
-  accelerometer = a;
+void Gyro::setEuler(Euler e){
+  rotation.setEuler(e);
+}
+
+Quaternion Gyro::getQuaternion(){
+  return rotation;
+}
+
+void Gyro::setQuaternion(Quaternion q){
+  rotation = q;
 }
 
 Accelerometer* Gyro::getAccelerometer(){
   return accelerometer;
 }
 
-//placeholders
+void Gyro::setAccelerometer(Accelerometer* a){
+  accelerometer = a;
+}
+
+//not necessary to override
 
 bool Gyro::isReady(){
    return true;
+}
+
+Vector3d Gyro::getOffset(){
+  return offset;
+}
+
+void Gyro::setOffset(Vector3d offset){
+  this->offset = offset;
 }

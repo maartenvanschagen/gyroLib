@@ -32,11 +32,12 @@
 
 class ADXL345: public Accelerometer {
   public:
-    bool isReady() override;
-    void setOffset(Vector3d offset) override;
-    Vector3d getOffset() override;
     void init() override;
     Vector3i read() override;
+
+    bool isReady() override;
+    Vector3d getOffset() override;
+    void setOffset(Vector3d offset) override;
 };
 
 #endif

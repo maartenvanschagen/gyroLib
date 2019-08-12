@@ -30,10 +30,6 @@ void ADXL345::init(){
   setZeroReading(0, 0, -255);
 }
 
-bool ADXL345::isReady(){
-  return ((I2C::getRegister(ACCEL, INT_SOURCE) & 0b10000000) == 0b10000000);  //check if data is ready
-}
-
 Vector3i ADXL345::read(){
   Vector3i raw;
   uint8_t accelData[6];
@@ -44,10 +40,8 @@ Vector3i ADXL345::read(){
   return raw;
 }
 
-void ADXL345::setOffset(Vector3d offset){
-  I2C::writeRegister(ACCEL, OFSX, (uint8_t)(offset.x/4));
-  I2C::writeRegister(ACCEL, OFSY, (uint8_t)(offset.y/4));
-  I2C::writeRegister(ACCEL, OFSZ, (uint8_t)(offset.z/4));
+bool ADXL345::isReady(){
+  return ((I2C::getRegister(ACCEL, INT_SOURCE) & 0b10000000) == 0b10000000);  //check if data is ready
 }
 
 Vector3d ADXL345::getOffset(){
@@ -56,4 +50,10 @@ Vector3d ADXL345::getOffset(){
   offset.y = (double)I2C::getRegister(ACCEL, OFSY)*4;
   offset.z = (double)I2C::getRegister(ACCEL, OFSZ)*4;
   return offset;
+}
+
+void ADXL345::setOffset(Vector3d offset){
+  I2C::writeRegister(ACCEL, OFSX, (uint8_t)(offset.x/4));
+  I2C::writeRegister(ACCEL, OFSY, (uint8_t)(offset.y/4));
+  I2C::writeRegister(ACCEL, OFSZ, (uint8_t)(offset.z/4));
 }
