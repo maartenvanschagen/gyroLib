@@ -2,7 +2,7 @@
 
 #include "defines.h"
 #include "quaternion.h"
-#include "I2C.h"
+#include "I2CWrapper.h"
 #include "gyro.h"
 
 void L3G4200D::init(){                                          //TODO: make settings dependant on defines

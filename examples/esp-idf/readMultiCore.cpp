@@ -1,10 +1,11 @@
-#include "defines.h"
+#include "I2CWrapper.h"
 #include "gyros/L3G4200D.h"
 #include "accelerometers/ADXL345.h"
-#include "I2C.h"
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+
+#define M_PI (double)(3.14159265358979323846)
 
 L3G4200D gyro = L3G4200D();
 ADXL345 accel = ADXL345();

@@ -1,5 +1,5 @@
-#ifndef I2C_H
-#define I2C_H
+#ifndef I2CWRAPPER_H
+#define I2CWRAPPER_H
 
 #include <cstdint>
 

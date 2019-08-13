@@ -1,7 +1,7 @@
 #include "defines.h"
 #include "gyros/L3G4200D.h"
 #include "accelerometers/ADXL345.h"
-#include "I2C.h"
+#include "I2CWrapper.h"
 #include "wrapper.h"
 
 #include <freertos/FreeRTOS.h>
