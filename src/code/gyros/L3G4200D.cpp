@@ -1,9 +1,9 @@
 #include "gyros/L3G4200D.h"
 
-#include "defines.h"
 #include "quaternion.h"
 #include "I2CWrapper.h"
 #include "gyro.h"
+#define M_PI (double)(3.14159265358979323846)  //replacement for #include <math.h>
 
 void L3G4200D::init(){                                          //TODO: make settings dependant on defines
   //change settings

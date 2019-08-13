@@ -1,3 +1,5 @@
+#ifdef ESP32  //only try to compile this for the esp32, this allows to build for multiple platforms at once
+
 #include "I2CWrapper.h"
 #include "gyros/L3G4200D.h"
 #include "accelerometers/ADXL345.h"
@@ -5,7 +7,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
-#define M_PI (double)(3.14159265358979323846)
+#define M_PI (double)(3.14159265358979323846)  //replacement for #include <math.h>
 
 L3G4200D gyro = L3G4200D();
 ADXL345 accel = ADXL345();
@@ -17,10 +19,10 @@ void loop2( void * );
 
 extern "C" void app_main() {
   I2C::init();
-  accel.setAxesSwitched("XYZ");
+  accel.setAxesSwitched('X', 'Y', 'Z');
   accel.setAxesReversed(true, true, false);
   accel.init();
-  gyro.setAxesSwitched("XYZ");
+  gyro.setAxesSwitched('X', 'Y', 'Z');
   gyro.setAxesReversed(true, true, false);
   gyro.setAccelerometer(&accel);
   gyro.init();
@@ -77,3 +79,4 @@ void loop2( void * parameter ){
   }
 }
 
+#endif

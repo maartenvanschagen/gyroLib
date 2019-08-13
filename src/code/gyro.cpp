@@ -1,10 +1,10 @@
 #include "gyro.h"
 
-#include "defines.h"
 #include "quaternion.h"
 #include "wrapper.h"
 
-#include <algorithm>
+#include <stdlib.h>
+#include <math.h>
 
 //functions
 
@@ -82,7 +82,7 @@ Vector3d Gyro::transformRotation(Vector3d raw){
 }
 
 void Gyro::nudgeRotationTowards(Quaternion q){
-  double reverseFactor = abs(rotation.w - q.w) + abs(rotation.x - q.x) + abs(rotation.y - q.y) + abs(rotation.z - q.z);
+  double reverseFactor = fabs(rotation.w - q.w) + fabs(rotation.x - q.x) + fabs(rotation.y - q.y) + fabs(rotation.z - q.z);
   if(reverseFactor > 0.5) q = -q;  //TODO: find a more scientific method of doing this
   rotation *= 0.999;
   rotation += q * .001;
@@ -93,10 +93,6 @@ void Gyro::nudgeRotationTowards(Accelerometer& a){
 }
 
 //getters and setters
-
-void Gyro::setAxesSwitched(std::string axesSwitched){
-  setAxesSwitched(axesSwitched[0], axesSwitched[1], axesSwitched[2]);
-}
 
 void Gyro::setAxesSwitched(char xAxis, char yAxis, char zAxis){
   this->axesSwitched[0] = xAxis;

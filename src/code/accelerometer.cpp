@@ -1,8 +1,7 @@
 #include "accelerometer.h"
 
-#include "defines.h"
 #include "quaternion.h"
-#include <cmath>
+#include <math.h>
 
 //helper functions
 
@@ -114,10 +113,6 @@ void Accelerometer::setZeroReading(double zeroX, double zeroY, double zeroZ){
 
 void Accelerometer::setZeroReading(Vector3d zero){
   this->zero = zero;
-}
-
-void Accelerometer::setAxesSwitched(std::string axesSwitched){
-  setAxesSwitched(axesSwitched[0], axesSwitched[1], axesSwitched[2]);
 }
 
 void Accelerometer::setAxesSwitched(char xAxis, char yAxis, char zAxis){

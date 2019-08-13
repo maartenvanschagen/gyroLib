@@ -1,6 +1,5 @@
 #include "accelerometers/ADXL345.h"
 
-#include "defines.h"
 #include "I2CWrapper.h"
 
 void ADXL345::init(){

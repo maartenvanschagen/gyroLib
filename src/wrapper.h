@@ -8,4 +8,8 @@ namespace wrapper{
   uint64_t getMicros();
 }
 
+#if defined(__AVR__)
+  extern "C" void __cxa_pure_virtual();
+#endif
+
 #endif

@@ -1,7 +1,7 @@
 #ifdef ESP32
   #include "I2CWrapper.h"
   #include "driver/i2c.h"
-  #include <cstdint>
+  #include <stdint.h>
 
   //TODO: create overloads with i2cport for everything
 

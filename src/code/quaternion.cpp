@@ -1,8 +1,7 @@
 #include "quaternion.h"
 
-#include "defines.h"
 
-#include <cmath>
+#include <math.h>
 
 Quaternion::Quaternion(double w, double x, double y, double z){
   setValue(w, x, y, z);

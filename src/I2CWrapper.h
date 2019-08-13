@@ -1,7 +1,7 @@
 #ifndef I2CWRAPPER_H
 #define I2CWRAPPER_H
 
-#include <cstdint>
+#include <stdint.h>
 
 namespace I2C {
     void init();

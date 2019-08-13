@@ -4,7 +4,6 @@
 #include "quaternion.h"
 #include "euler.h"
 #include "vector3.h"
-#include <string>
 
 //TODO: support different callibration schemes, single-point calibration works quite poorly
 
@@ -24,7 +23,6 @@ class Accelerometer {
     Vector3d getZeroReading();
     void setZeroReading(double zeroX, double zeroY, double zeroZ);
     void setZeroReading(Vector3d zero);
-    void setAxesSwitched(std::string setAxesSwitched);
     void setAxesSwitched(char xAxis, char yAxis, char zAxis);
     void setAxesReversed(bool x, bool y, bool z);
     void setOffset(double offsetX, double offsetY, double offsetZ);
