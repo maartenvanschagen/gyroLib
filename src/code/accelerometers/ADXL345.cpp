@@ -32,7 +32,7 @@ void ADXL345::init(){
 Vector3i ADXL345::read(){
   Vector3i raw;
   uint8_t accelData[6];
-  I2C::getRegister(ACCEL, DATAX0, &accelData[0], 6);//put data in accelData with pointer address, increment is automatic
+  I2C::getRegister(ACCEL, DATAX0, accelData, 6);//put data in accelData with pointer address, increment is automatic
   raw.x = (short)(accelData[1] << 8 | accelData[0]); //DATAX1 .. DATAX0    //shorts are to handle negatives (last bit)
   raw.y = (short)(accelData[3] << 8 | accelData[2]); //DATAY1 .. DATAY0
   raw.z = (short)(accelData[5] << 8 | accelData[4]); //DATAZ1 .. DATAZ0
