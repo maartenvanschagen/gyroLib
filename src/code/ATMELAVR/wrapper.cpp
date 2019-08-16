@@ -7,6 +7,10 @@
     void delayMillis(const uint64_t milliseconds){
       _delay_ms(milliseconds); 
     }
+
+    void init(){
+    }
+
     uint64_t getMicros(){
       return 0;
     }

@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 namespace wrapper{
+  void init();
   void delayMillis(const uint64_t milliseconds);
   uint64_t getMicros();
 }

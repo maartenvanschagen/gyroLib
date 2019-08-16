@@ -6,6 +6,9 @@
   #include <freertos/task.h>
 
   namespace wrapper{
+    void init(){
+      
+    }
     void delayMillis(const uint64_t milliseconds){
       vTaskDelay(milliseconds / portTICK_PERIOD_MS);
     }
