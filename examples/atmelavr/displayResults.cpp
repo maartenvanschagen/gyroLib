@@ -13,6 +13,7 @@ void loop();
 
 int main(void) {
   I2C::init();
+  wrapper::init();
   accel.setAxesSwitched('X', 'Y', 'Z');
   accel.setAxesReversed(true, true, false);
   accel.init();

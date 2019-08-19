@@ -19,6 +19,7 @@ void loop2( void * );
 
 extern "C" void app_main() {
   I2C::init();
+  wrapper::init();
   accel.setAxesSwitched('X', 'Y', 'Z');
   accel.setAxesReversed(true, true, false);
   accel.init();

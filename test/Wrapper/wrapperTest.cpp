@@ -7,17 +7,19 @@ void test_delayAndMicros();
 void test() {
   UNITY_BEGIN();
 
+  wrapper::init();
+
   RUN_TEST(test_delayAndMicros);
 
   UNITY_END();
 }
 
 void test_delayAndMicros(){
-  unsigned int delayMillis = 100;
-  unsigned int startMicros = wrapper::getMicros();
+  unsigned int delayMillis = 10;
+  uint64_t startMicros = wrapper::getMicros();
   wrapper::delayMillis(delayMillis);
-  unsigned int realDelayMicros = wrapper::getMicros() - startMicros;
-  TEST_ASSERT_INT_WITHIN(delayMillis / 25, delayMillis, realDelayMicros / 1000);
+  uint64_t realDelayMicros = wrapper::getMicros() - startMicros;
+  TEST_ASSERT_UINT32_WITHIN((delayMillis * 1000) / 25, delayMillis * 1000, realDelayMicros);
 }
 
 #ifdef __AVR__
