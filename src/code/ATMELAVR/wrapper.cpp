@@ -12,23 +12,23 @@
       _delay_ms(milliseconds); 
     }
 
-    void init(){
-      TCNT0 = 0x00;
+    void init(){ // TODO: add support for use of timer 1 instead for less interrupts
+      TCNT0 = 0x00; // set timer to 0
       #if defined (TCCR0)
-        TCCR0B |= (0<<CS02) | (1<<CS01) | (1<<CS00);
+        TCCR0B |= (0<<CS02) | (1<<CS01) | (1<<CS00); //set tick speed (4 microseconds on 16 MHz to be arduino compatible)
       #endif
       #if defined (TCCR0A) && defined (TCCR0B)
-        TCCR0A |= 0x00;
-        TCCR0B |= (0<<CS02) | (1<<CS01) | (1<<CS00);  //4 microseconds tick on a 16 MHz oscillator
+        TCCR0A |= 0x00;  //this register is useless for us
+        TCCR0B |= (0<<CS02) | (1<<CS01) | (1<<CS00);  //set tick speed (4 microseconds on 16 MHz to be arduino compatible)
       #endif
 
-      TIMSK0 |= 1 << TOIE0;
+      TIMSK0 |= 1 << TOIE0; //enable timer overflow interrupt
 
       sei();
     }
 
     uint64_t getMicros(){
-      return (TCNT0 + 255 * overflowTick) / (F_CPU / 64.0 / 1000.0 / 1000.0);
+      return (TCNT0 + 255 * overflowTick) /* current ticks + times overflowed * max value */ / (F_CPU / 64.0 / 1000.0 / 1000.0);
     }
   }
 
@@ -38,7 +38,7 @@
   }
 
   //interrupt for millis and timing
-  ISR(TIMER0_OVF_vect)
+  ISR(TIMER0_OVF_vect)  //timer overflow interrupt
   {
       wrapper::overflowTick++;
   }
