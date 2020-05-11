@@ -10,7 +10,7 @@ namespace wrapper{
 }
 
 #if defined(__AVR__)
-  extern "C" void __cxa_pure_virtual();
+  extern "C" void __cxa_pure_virtual(); //Supress errors on pure virtual functions. This library uses these functions.
 #endif
 
 #endif
