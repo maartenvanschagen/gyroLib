@@ -1,2 +1,0 @@
-# The 'examples/Arduino' directory
-All Arduino examples can be found in the 'examples/Arduino' directory. Every example consists of a folder with a single .ino file. This is done too keep examples simple and readable by the Arduino IDE.

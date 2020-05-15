@@ -16,9 +16,4 @@
     }
   }
 
-  extern "C" void __cxa_pure_virtual()
-  {
-    //TODO: handle undefined pure function here
-  }
-
 #endif
