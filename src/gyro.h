@@ -5,7 +5,9 @@
 #include "euler.h"
 #include "vector3.h"
 #include "accelerometer.h"
-#include <string>
+#include "wrapper.h"
+
+#include <stddef.h>
 
 class Gyro {
   public:
@@ -18,7 +20,6 @@ class Gyro {
     void nudgeRotationTowards(Accelerometer& a);
 
     //getters and setters
-    void setAxesSwitched(std::string setAxesSwitched);
     void setAxesSwitched(char xAxis, char yAxis, char zAxis);
     void setAxesReversed(bool x, bool y, bool z);
     void setOffset(double offsetX, double offsetY, double offsetZ);
@@ -44,8 +45,8 @@ class Gyro {
     char axesSwitched[3] = {'X', 'Y', 'Z'};
     bool axesReversed[3] = {false, false, false};
     //for step loop
-    long lastMicros;
-    int timePast = 0;
+    uint64_t lastMicros;
+    uint32_t timePast = 0;
 };
 
 #endif

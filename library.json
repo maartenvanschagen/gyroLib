@@ -1,6 +1,6 @@
 {
   "name":"gyroLib",
-  "description":"'gyroLib' is a simple modular gyro library.",
+  "description":"'gyroLib' is a simple to use modular gyro library.",
   "keywords":"gyro,gyroscope,accelerometer,esp32",
   "authors":
   {
@@ -18,7 +18,9 @@
   "examples": ["examples/*/*.cpp", "examples/*.ino"],
   "build": {
     "includeDir":"src",
-    "srcDir":"src/code"
+    "srcDir":"src/code",
+    "unflags":"-std=c++98",
+    "flags":"-std=c++11"
   }
 
 }

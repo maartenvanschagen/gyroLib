@@ -1,9 +1,9 @@
 #include "gyros/L3G4200D.h"
 
-#include "defines.h"
 #include "quaternion.h"
-#include "I2C.h"
+#include "I2CWrapper.h"
 #include "gyro.h"
+#define M_PI (double)(3.14159265358979323846)  //replacement for #include <math.h>
 
 void L3G4200D::init(){                                          //TODO: make settings dependant on defines
   //change settings
@@ -27,11 +27,11 @@ void L3G4200D::init(){                                          //TODO: make set
 
 Vector3i L3G4200D::read(){ // ~280 microseconds
   uint8_t gyroData[6];
-  I2C::getRegister(GYRO, OUT_X_L | (0b10000000), &gyroData[0], 6);//put data in gyroData with pointer address  -  incement the address after read register (with 0b10000000)
+  I2C::getRegister(GYRO, OUT_X_L | (0b10000000), gyroData, 6);//put data in gyroData with pointer address  -  increment the address after read register (with 0b10000000)
   Vector3i raw;
-  raw.x = (short)(gyroData[1] << 8 | gyroData[0]); //OUT_X_H .. OUT_X_L     //shorts are to handle negatives (last bit)
-  raw.y = (short)(gyroData[3] << 8 | gyroData[2]); //OUT_Y_H .. OUT_Y_L
-  raw.z = (short)(gyroData[5] << 8 | gyroData[4]); //OUT_Z_H .. OUT_Z_L
+  raw.x = (int16_t)(gyroData[1] << 8 | gyroData[0]); //OUT_X_H .. OUT_X_L     //shorts are to handle negatives (last bit)
+  raw.y = (int16_t)(gyroData[3] << 8 | gyroData[2]); //OUT_Y_H .. OUT_Y_L
+  raw.z = (int16_t)(gyroData[5] << 8 | gyroData[4]); //OUT_Z_H .. OUT_Z_L
   return raw;
 }
 

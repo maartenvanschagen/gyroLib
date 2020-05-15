@@ -2,6 +2,8 @@
 #define QUATERNION_H
 
 #include "euler.h"
+#include "wrapper.h"
+
 
 //euler is always calculated in XYZ
 

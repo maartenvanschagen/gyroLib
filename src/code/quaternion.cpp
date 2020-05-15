@@ -1,8 +1,6 @@
 #include "quaternion.h"
 
-#include "defines.h"
-
-#include <cmath>
+#include <math.h>
 
 Quaternion::Quaternion(double w, double x, double y, double z){
   setValue(w, x, y, z);
@@ -46,7 +44,7 @@ void Quaternion::setValue(double w, double x, double y, double z){
   this->z = z;
 }
 
-void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 microseconds  ,  euler in XYZ     ///Modified version of WIKIPEDIA code
+void Quaternion::getEuler(double& yaw, double& pitch, double& roll){   //~90 microseconds ESP32  ,  euler in XYZ     ///Modified version of WIKIPEDIA code
   // roll (x-axis rotation)
   double sinr_cosp = +2.0 * (w * x + y * z);
   double cosr_cosp = w*w - x*x - y*y + z*z;
@@ -85,7 +83,7 @@ void Quaternion::setEuler(Euler e){
   setEuler(e.yaw, e.pitch, e.roll);
 }
 
-void Quaternion::setGyro(double gx, double gy, double gz){   //TODO: find better way then a sequence, there all simultainious anyway
+void Quaternion::setGyro(double gx, double gy, double gz){
   double cx = cos(gx/2), cy = cos(gy/2), cz = cos(gz/2);
   double sx = sin(gx/2), sy = sin(gy/2), sz = sin(gz/2);
 
@@ -95,19 +93,19 @@ void Quaternion::setGyro(double gx, double gy, double gz){   //TODO: find better
   z = (sx * sy * cz) + (cy * cy * sz);
 }
 
-void Quaternion::setMagnitude(double const dist){   //~40 microseconds
+void Quaternion::setMagnitude(double const dist){   //~40 microseconds ESP32
   double factor = dist/sqrt((w*w + x*x + y*y + z*z));
   *this *= factor;
 }
 
 double Quaternion::roughDistance(Quaternion q2){ //from https://math.stackexchange.com/questions/90081/quaternion-distance
   double innerProduct = w * q2.w + x * q2.x + y * q2.y + z * q2.z;
-  return (1 - pow(innerProduct, 2));
+  return (1 - (innerProduct * innerProduct));
 }
 
 //operators
 
-Quaternion Quaternion::operator* (Quaternion const& q2){  //~80 microseconds
+Quaternion Quaternion::operator* (Quaternion const& q2){  //~80 microseconds ESP32
   Quaternion qnew = Quaternion();
   qnew.w = (w * q2.w) - (x * q2.x) - (y * q2.y) - (z * q2.z);
   qnew.x = (x * q2.w) + (w * q2.x) - (z * q2.y) + (y * q2.z);
@@ -116,7 +114,7 @@ Quaternion Quaternion::operator* (Quaternion const& q2){  //~80 microseconds
   return qnew;
 }
 
-Quaternion& Quaternion::operator*= (Quaternion const& q2){  //~80 microseconds
+Quaternion& Quaternion::operator*= (Quaternion const& q2){  //~80 microseconds ESP32
   w = (w * q2.w) - (x * q2.x) - (y * q2.y) - (z * q2.z);
   x = (x * q2.w) + (w * q2.x) - (z * q2.y) + (y * q2.z);
   y = (y * q2.w) + (z * q2.x) + (w * q2.y) - (x * q2.z);
