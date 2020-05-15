@@ -3,13 +3,13 @@
 At this moment gyroLib is a multi-platform library with support for the devices found on the GY-80 board.
 
 ## Supported platforms
-The gyroLib library can run on multiple platforms. Platforms that are supported at this moment are:
+The gyroLib library can run on multiple platforms:
 - Arduino
 - esp-idf
 - avr
 
 ## Supported sensors
-At this moment, sensor support is a bit sparse. However, support for more sensors is on the way! At this moment it supports the following sensors:
+Sensor support is a bit sparse at the moment. But support for more sensors is on the way! Right now, the library supports the following sensors:
 - L3G4200D
 - ADXL345
 Support for magnetometers and barometers is also being worked on.
