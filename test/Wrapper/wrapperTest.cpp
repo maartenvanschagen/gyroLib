@@ -6,6 +6,7 @@ void test_delayAndMicros();
 
 void test() {
   UNITY_BEGIN();
+  wrapper::delayMillis(100);
 
   wrapper::init();
 
@@ -15,19 +16,26 @@ void test() {
 }
 
 void test_delayAndMicros(){
-  unsigned int delayMillis = 10;
+  unsigned int delayMillis = 100;
   uint64_t startMicros = wrapper::getMicros();
   wrapper::delayMillis(delayMillis);
   uint64_t realDelayMicros = wrapper::getMicros() - startMicros;
   TEST_ASSERT_UINT32_WITHIN((delayMillis * 1000) / 25, delayMillis * 1000, realDelayMicros);
 }
 
-#ifdef __AVR__
+#if defined(ARDUINO)
+  #include "Arduino.h"
+  void setup(){
+    test();
+  }
+  void loop(){
+
+  }
+#elif defined(__AVR__)
   int main(void) {
     test();
   }
-#endif 
-#ifdef ESP32
+#elif defined(IDF_VER)
   extern "C" void app_main() {
     test();
   }

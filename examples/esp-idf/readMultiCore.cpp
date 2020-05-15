@@ -1,5 +1,3 @@
-#ifdef ESP32  //only try to compile this for the esp32, this allows to build for multiple platforms at once
-
 #include "I2CWrapper.h"
 #include "gyros/L3G4200D.h"
 #include "accelerometers/ADXL345.h"
@@ -79,5 +77,3 @@ void loop2( void * parameter ){
     gyro.step();
   }
 }
-
-#endif

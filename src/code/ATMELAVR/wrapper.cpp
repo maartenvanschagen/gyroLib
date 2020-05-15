@@ -1,4 +1,4 @@
-#ifdef __AVR__
+#if defined(__AVR__) && !defined(ARDUINO)
   #include "wrapper.h"
   #include <stdint.h>
   #include <util/delay.h>

@@ -51,8 +51,8 @@ struct Vector3{
 //shorthand definitions
 typedef Vector3<double> Vector3d;
 typedef Vector3<float> Vector3f;
-typedef Vector3<int> Vector3i;
-typedef Vector3<long> Vector3l;
-typedef Vector3<short> Vector3s;
+typedef Vector3<int32_t> Vector3i; //int
+typedef Vector3<int64_t> Vector3l; //long
+typedef Vector3<int16_t> Vector3s; //short
 
 #endif

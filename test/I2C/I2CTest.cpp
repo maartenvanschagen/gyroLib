@@ -45,12 +45,19 @@ void test_getRegister_multiple(){
   TEST_ASSERT_BITS(0xFFFF, 0b00001111 << 8 | 0b11001100, list[0] << 8 | list[1]);
 }
 
-#ifdef __AVR__
+#if defined(ARDUINO)
+  #include "Arduino.h"
+  void setup(){
+    test();
+  }
+  void loop(){
+
+  }
+#elif defined(__AVR__)
   int main(void) {
     test();
   }
-#endif 
-#ifdef ESP32
+#elif defined(IDF_VER)
   extern "C" void app_main() {
     test();
   }

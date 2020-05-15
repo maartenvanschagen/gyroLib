@@ -1,4 +1,4 @@
-#ifdef ESP32
+#if defined(IDF_VER) && !defined(ARDUINO)
   #include "wrapper.h"
 
   #include <stdint.h>
@@ -10,10 +10,10 @@
       
     }
     void delayMillis(const uint64_t milliseconds){
-      vTaskDelay(milliseconds / portTICK_PERIOD_MS);
+      vTaskDelay(pdMS_TO_TICKS(milliseconds));
     }
     uint64_t getMicros(){
-      return (uint64_t)esp_timer_get_time();
+      return esp_timer_get_time();
     }
 }
 #endif

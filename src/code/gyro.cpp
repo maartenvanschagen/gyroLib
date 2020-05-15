@@ -83,7 +83,7 @@ Vector3d Gyro::transformRotation(Vector3d raw){
 
 void Gyro::nudgeRotationTowards(Quaternion q){
   double reverseFactor = fabs(rotation.w - q.w) + fabs(rotation.x - q.x) + fabs(rotation.y - q.y) + fabs(rotation.z - q.z);
-  if(reverseFactor > 0.5) q = -q;  //TODO: find a more scientific method of doing this
+  if(reverseFactor > 0.5) q = -q;  //TODO: find a more scientificly correct method of doing this
   rotation *= 0.999;
   rotation += q * .001;
 }

@@ -45,8 +45,8 @@ class Gyro {
     char axesSwitched[3] = {'X', 'Y', 'Z'};
     bool axesReversed[3] = {false, false, false};
     //for step loop
-    long lastMicros;
-    int timePast = 0;
+    uint64_t lastMicros;
+    uint32_t timePast = 0;
 };
 
 #endif

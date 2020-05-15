@@ -1,4 +1,4 @@
-#ifdef __AVR__
+#if defined(__AVR__) && !defined(ARDUINO)
   #include "I2CWrapper.h"
   #include <stdint.h>
   #include <avr/io.h>
@@ -6,7 +6,7 @@
   #define I2C_FREQ 400000 //doens't support different prescales
 
   //this wrapper is written synchronous
-  //TODO: add async support with a define
+  //TODO: add async I2C support
 
   namespace I2C{
     void start();

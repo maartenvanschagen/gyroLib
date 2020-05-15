@@ -1,4 +1,4 @@
-#ifdef ESP32
+#if defined(IDF_VER) && !defined(ARDUINO)
   #include "I2CWrapper.h"
   #include "driver/i2c.h"
   #include <stdint.h>

@@ -1,5 +1,3 @@
-#ifdef __AVR__  //only try to compile this for the esp32, this allows to build for multiple platforms at once
-
 #include "gyros/L3G4200D.h"
 #include "accelerometers/ADXL345.h"
 #include "I2CWrapper.h"
@@ -57,5 +55,3 @@ void loop() {
 
   //printf("-------\n");
 }
-
-#endif

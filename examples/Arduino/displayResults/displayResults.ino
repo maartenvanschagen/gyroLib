@@ -1,15 +1,12 @@
 #include "gyros.h"
 #include "accelerometers.h"
 #include "I2CWrapper.h"
-#include "wrapper.h"
 
 
 L3G4200D gyro = L3G4200D();
 ADXL345 accel = ADXL345();
 
-void loop();
-
-int main(void) {
+void setup() {
   Serial.begin(115200);
   
   I2C::init();
@@ -18,16 +15,12 @@ int main(void) {
   accel.init();
   gyro.setAxesSwitched('X', 'Y', 'Z');
   gyro.setAxesReversed(true, true, false);
-  gyro.setAccelerometer(&accel);
+  gyro.setAccelerometer(&accel); //Use a accelerometer for less accuracy loss over time
   gyro.init();
 
-  wrapper::delayMillis(100);
+  delay(100);
   gyro.calibrate(1000);
   accel.calibrate(1000);
-
-  while(true){
-    loop();
-  }
 }
 
 void loop() {
@@ -42,7 +35,7 @@ void loop() {
   Euler accelEuler = accel.getEuler();
 
 
-  Serial.print("\tyaw\t\tpitch\t\troll\n");     //print euler angle info
+  Serial.print("\tyaw\tpitch\troll\n");     //print euler angle info
   //Serial.print("\tw\t\tx\t\ty\t\tz\n");         //print quaternion info
 
   Serial.print("gyro:\t" + String(gyroEuler.yaw * 180/M_PI) + "\t" + String(gyroEuler.pitch * 180/M_PI) + "\t" + String(gyroEuler.roll * 180/M_PI) + "\n"); //print euler angles
@@ -55,4 +48,5 @@ void loop() {
   ////printf("accel:\t%i\t%i\t%i\n", accel.rawX, accel.rawY, accel.rawZ);                                                                                 //print raw data
 
   Serial.print("-------\n");
+  delay(10);
 }
