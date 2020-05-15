@@ -1,4 +1,4 @@
-# gyroLib V0.2
+# gyroLib V0.2 (beta)
 'gyroLib' is a simple modular gyro library, first created for the 'ESP32 Quadcopter' project (https://github.com/maartennl2002/ESP32-Quadcopter).
 At first, it will just be an Arduino library built for the ESP32 to interface with the GY-80 board.
 
