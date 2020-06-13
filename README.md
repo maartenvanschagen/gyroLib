@@ -12,6 +12,7 @@ The gyroLib library can run on multiple platforms:
 Sensor support is a bit sparse at the moment. But support for more sensors is on the way! Right now, the library supports the following sensors:
 - L3G4200D
 - ADXL345
+
 Support for magnetometers and barometers is also being worked on.
 
 ## Supported IDE's
