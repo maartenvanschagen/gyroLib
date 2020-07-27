@@ -93,9 +93,10 @@ void Quaternion::setGyro(double gx, double gy, double gz){
   z = (sx * sy * cz) + (cy * cy * sz);
 }
 
-void Quaternion::setMagnitude(double const dist){   //~40 microseconds ESP32
+Quaternion Quaternion::setMagnitude(double const dist){   //~40 microseconds ESP32
   double factor = dist/sqrt((w*w + x*x + y*y + z*z));
   *this *= factor;
+  return *this;
 }
 
 double Quaternion::roughDistance(Quaternion q2){ //from https://math.stackexchange.com/questions/90081/quaternion-distance

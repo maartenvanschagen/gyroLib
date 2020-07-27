@@ -25,7 +25,7 @@ class Quaternion {
     void setEuler(double yaw, double pitch, double roll);
     void setEuler(Euler e);
     void setGyro(double gx, double gy, double gz);  //different than Euler because these rotations are simultanious, not in sequence
-    void setMagnitude(double const dist);
+    Quaternion setMagnitude(double const dist);
     double roughDistance(Quaternion q2);
     
     Quaternion operator* (Quaternion const& q2);

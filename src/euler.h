@@ -8,7 +8,6 @@ struct Euler {
     this->yaw = yaw;
     this->pitch = pitch;
     this->roll = roll;
-    Euler();
   }
   Euler(){
 

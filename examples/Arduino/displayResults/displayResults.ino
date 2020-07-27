@@ -2,7 +2,6 @@
 #include "accelerometers.h"
 #include "I2CWrapper.h"
 
-
 L3G4200D gyro = L3G4200D();
 ADXL345 accel = ADXL345();
 
