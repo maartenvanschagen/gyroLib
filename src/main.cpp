@@ -17,7 +17,7 @@ void setup() {
     I2C::init();
     compass.init();
     accel.setAxesSwitched('X', 'Y', 'Z');
-    accel.setAxesReversed(true, true, false);
+    accel.setAxesReversed(false, false, false);
     accel.init();
 
     Serial.println("Start calibration");
@@ -35,12 +35,11 @@ void setup() {
     Serial.print(calVal.scale.y);
     Serial.print(" ");
     Serial.println(calVal.scale.z);
-    start = compass.getFieldDirection() * accel.getQuaternion();
 }
 
 void loop(){
     accel.step();
-    double heading = compass.getFieldDirection().getEuler().yaw;
+    double heading = compass.getYaw(compass.getCorrectedField(accel.getQuaternion(0)));
 
     Serial.println("----head------");
     Serial.println(heading *180/PI);
@@ -54,14 +53,32 @@ void loop(){
     Serial.print(" ");
     Serial.println(dirAccel.roll);
 
-    Euler fieldDir = compass.getFieldDirection().getEuler(); //TODO: getFieldDirection() doesn't work
+    /*Euler fieldDir = compass.getFieldDirection().getEuler(); //TODO: getFieldDirection() doesn't work
 
     Serial.println("---field-dir----");
     Serial.print(fieldDir.yaw);
     Serial.print(" ");
     Serial.print(fieldDir.pitch);
     Serial.print(" ");
-    Serial.println(fieldDir.roll);
+    Serial.println(fieldDir.roll);*/
+
+    Vector3d field = compass.getField();
+
+    Serial.println("---field----");
+    Serial.print(field.x);
+    Serial.print(" ");
+    Serial.print(field.y);
+    Serial.print(" ");
+    Serial.println(field.z);
+
+    Vector3d correctedfield = compass.correctField(field, accel.getQuaternion(0));
+
+    Serial.println("---corrected-field----");
+    Serial.print(correctedfield.x);
+    Serial.print(" ");
+    Serial.print(correctedfield.y);
+    Serial.print(" ");
+    Serial.println(correctedfield.z);
 
     delay(250);
 }

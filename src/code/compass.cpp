@@ -39,7 +39,7 @@ compassCalibrate Compass::calibrate(int samplesize, bool changeValues){  // TODO
 }
 
 Vector3d Compass::calcField(Vector3d value, Vector3d offset, Vector3d scale){
-    return (value - offset) * scale;
+    return (value - offset) / scale;
 }
 
 Vector3d Compass::calcField(Vector3d value, compassCalibrate calibrateVal){
@@ -54,8 +54,30 @@ Vector3d Compass::getField(){
     return calcField(calcGaus(read()));
 }
 
+Vector3d Compass::getCorrectedField(Quaternion pitchRoll){
+    Vector3d field = getField();
+    return correctField(field, pitchRoll);
+}
+
+Vector3d Compass::correctField(Vector3d field, Quaternion pitchRoll){
+    Euler rot = pitchRoll.getEuler(); //subtract this rotation
+    Vector3d correctedField;
+
+    //subtract roll
+    correctedField.y = (field.y * cos(rot.roll)) + (field.z * sin(rot.roll));
+    correctedField.z = (-field.y * sin(rot.roll)) + (field.z * cos(rot.roll));
+
+    //subtract pitch
+    correctedField.x = field.x;
+    field = correctedField;
+    correctedField.x = (field.x * cos(rot.pitch)) - (field.z * sin(rot.pitch));
+    correctedField.z = (field.x * sin(rot.pitch)) + (field.z * cos(rot.pitch));
+
+    return correctedField;
+}
+
 double Compass::getYaw(Vector3d field){  // TODO: add support for 3d
-    return atan2(field.x, field.z);
+    return atan2(field.x, field.y);
     //return getFieldDirection(field).getEuler().yaw;
 }
 
@@ -63,12 +85,12 @@ double Compass::getYaw(){
     return getYaw(getField());
 }
 
-Quaternion Compass::getFieldDirection(Vector3d field){//TODO: doesn't work
+Quaternion Compass::getFieldDirection(Vector3d field, Quaternion accelerometer){//TODO: doesn't work
     return Quaternion(0, field.x, field.y, field.z).setMagnitude(1);
 }
 
-Quaternion Compass::getFieldDirection(){
-    return getFieldDirection(getField());
+Quaternion Compass::getFieldDirection(Quaternion accelerometer){
+    return getFieldDirection(getField(), accelerometer);
 }
 
 

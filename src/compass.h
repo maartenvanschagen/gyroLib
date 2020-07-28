@@ -28,10 +28,12 @@ class Compass {
     Vector3d calcField(Vector3d value, compassCalibrate calibrate);
     Vector3d calcField(Vector3d value);
     Vector3d getField();
+    Vector3d getCorrectedField(Quaternion pitchRoll); //Subtract pitch and roll
+    Vector3d correctField(Vector3d field, Quaternion pitchRoll); //Subtract pitch and roll
     double getYaw(Vector3d field); // TODO: add support for 3d
     double getYaw();
-    Quaternion getFieldDirection(Vector3d field);
-    Quaternion getFieldDirection();
+    Quaternion getFieldDirection(Vector3d field, Quaternion accelerometer); //Needs quaternion with yaw = 0
+    Quaternion getFieldDirection(Quaternion accelerometer); //Needs quaternion with yaw = 0
 
     //not necessary to override
     virtual bool isReady();

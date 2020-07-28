@@ -12,8 +12,8 @@ Vector3i HMC5883L::read(){
     I2C::getRegister(COMPASS, OUT_X_H, compassData, 6);
     Vector3i raw;
     raw.x = (int16_t)(compassData[0] << 8 | compassData[1]); //OUT_X_H .. OUT_X_L
-    raw.y = (int16_t)(compassData[2] << 8 | compassData[3]); //OUT_Y_H .. OUT_Y_L
-    raw.z = (int16_t)(compassData[4] << 8 | compassData[5]); //OUT_Z_H .. OUT_Z_L
+    raw.z = (int16_t)(compassData[2] << 8 | compassData[3]); //OUT_Z_H .. OUT_Z_L
+    raw.y = (int16_t)(compassData[4] << 8 | compassData[5]); //OUT_Y_H .. OUT_Y_L
     return raw;
 }
 

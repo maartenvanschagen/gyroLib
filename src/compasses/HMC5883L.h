@@ -16,10 +16,10 @@
 
 #define OUT_X_H        3
 #define OUT_X_L        4
-#define OUT_Y_H        5
-#define OUT_Y_L        6
-#define OUT_Z_H        7
-#define OUT_Z_L        8
+#define OUT_Z_H        5
+#define OUT_Z_L        6
+#define OUT_Y_H        7
+#define OUT_Y_L        8
 
 class HMC5883L: public Compass {
   public:
