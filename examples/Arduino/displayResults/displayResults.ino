@@ -1,9 +1,8 @@
-#include "gyros.h"
-#include "accelerometers.h"
+#include "boards/GY80.h"
 #include "I2CWrapper.h"
 
-L3G4200D gyro = L3G4200D();
-ADXL345 accel = ADXL345();
+GY80_GYRO gyro = L3G4200D();
+GY80_ACCELEROMETER accel = ADXL345();
 
 void setup() {
   Serial.begin(115200);

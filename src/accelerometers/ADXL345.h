@@ -5,7 +5,7 @@
 
 //ADXL345
 #define ACCEL             0x53
-#define DEVID           0x00
+//#define DEVID           0x00  //breaks on stm32
 #define OFSX            0x1E
 #define OFSY            0x1F
 #define OFSZ            0x20
