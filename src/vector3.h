@@ -107,6 +107,15 @@ struct Vector3{
     z /= c2;
     return *this;
   }
+
+  template<class TC = double> 
+  operator Vector3<TC>() const {
+    Vector3<TC> v;
+    v.x = x;
+    v.y = y;
+    v.z = z;
+    return v;
+  }
 };
 
 //shorthand definitions

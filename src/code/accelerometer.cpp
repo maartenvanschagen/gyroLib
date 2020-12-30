@@ -51,7 +51,7 @@ Euler Accelerometer::calcEuler(Vector3i raw){
 }
 
 Euler Accelerometer::calcEuler(){
-  return calcEuler(read());
+  return calcEuler(readAndApplyOffset());
 }
 
 Euler Accelerometer::calcEuler(Vector3i raw, double yaw){
@@ -155,6 +155,18 @@ void Accelerometer::setYaw(double yaw){
   rotation.yaw = yaw;
 }
 
+Vector3d Accelerometer::applyOffset(Vector3i raw){
+  return applyOffset(raw, offset);
+}
+
+Vector3d Accelerometer::readAndApplyOffset(Vector3d offset){
+  return applyOffset(read(), offset);
+}
+
+Vector3d Accelerometer::readAndApplyOffset(){
+  return applyOffset(read());
+}
+
 //not necessary to override
 
 bool Accelerometer::isReady(){
@@ -168,3 +180,8 @@ Vector3d Accelerometer::getOffset(){
 void Accelerometer::setOffset(Vector3d offset){
   this->offset = offset;
 }
+
+Vector3d Accelerometer::applyOffset(Vector3i raw, Vector3d offset){
+  return (raw + offset);
+}
+

@@ -8,6 +8,15 @@
       Wire.setClock(400000);
     }
 
+    void init(uint16_t sdaPin, uint16_t sclPin){
+      #if defined(IDF_VER) //when using the esp32 allow for choosing pins
+        Wire.begin(sdaPin, sclPin);
+        Wire.setClock(400000);
+      #else //otherwise ignore this option
+        init();
+      #endif
+    }
+
     uint8_t getRegister(uint8_t device, uint8_t reg){
       uint8_t receiveData;
       getRegister(device, reg, &receiveData, 1);

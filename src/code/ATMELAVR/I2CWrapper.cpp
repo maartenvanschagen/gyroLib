@@ -20,6 +20,10 @@
       TWBR = (((F_CPU / I2C_FREQ) - 16) / 2); //set clock frequency
     }
 
+    void init(uint16_t sdaPin, uint16_t sclPin){
+      init(); //ignore pin choices, our device doesn't allow us to set this
+    }
+
     uint8_t getRegister(uint8_t device, uint8_t reg){
       uint8_t receiveData;
       getRegister(device, reg, &receiveData, 1);

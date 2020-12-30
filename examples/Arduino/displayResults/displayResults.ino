@@ -1,4 +1,4 @@
-#include "boards/GY80.h"
+#include "GY80.h"
 #include "I2CWrapper.h"
 
 GY80_GYRO gyro = L3G4200D();

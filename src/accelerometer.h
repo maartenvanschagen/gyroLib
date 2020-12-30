@@ -32,14 +32,18 @@ class Accelerometer {
     Quaternion getQuaternion(double yaw);
     void setQuaternion(Quaternion q);
     void setYaw(double yaw);
+    Vector3d applyOffset(Vector3i raw);
+    Vector3d readAndApplyOffset();
+    Vector3d readAndApplyOffset(Vector3d offset);
 
     //not necessary to override
     virtual bool isReady();
     virtual Vector3d getOffset();
     virtual void setOffset(Vector3d offset);
+    virtual Vector3d applyOffset(Vector3i raw, Vector3d offset);
     //necessary to override
     virtual void init() = 0; //don't forget to set the default zero reading for the sensor
-    virtual Vector3i read() = 0;  //don't forget to include the offset when reading
+    virtual Vector3i read() = 0;
   private:
     Euler rotation = Euler();
     Vector3d offset;

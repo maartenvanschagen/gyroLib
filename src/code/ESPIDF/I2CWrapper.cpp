@@ -6,12 +6,16 @@
   //TODO: create overloads with i2cport for everything
 
   namespace I2C{
-    void init(){ //TODO: make config changable with arguments (pins as arguments or i2c_config as argument)
+    void init(){
+      init(GPIO_NUM_16, GPIO_NUM_17);
+    }
+
+    void init(uint16_t sdaPin, uint16_t sclPin){
       i2c_config_t conf;
       conf.mode = I2C_MODE_MASTER;
-      conf.sda_io_num = GPIO_NUM_16;
+      conf.sda_io_num = static_cast<gpio_num_t>(sdaPin);
       conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
-      conf.scl_io_num = GPIO_NUM_17;
+      conf.scl_io_num = static_cast<gpio_num_t>(sclPin);
       conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
       conf.master.clk_speed = 400000;
       i2c_param_config(I2C_NUM_0, &conf);

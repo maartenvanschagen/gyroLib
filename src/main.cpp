@@ -1,84 +1,79 @@
-#include "compasses/HMC5883L.h"
-#include "accelerometers/ADXL345.h"
-#include <Arduino.h>
 #include "I2CWrapper.h"
+#include "gyros/MPU6050.h"
+#include "accelerometers/MPU6050.h"
 
-HMC5883L compass = HMC5883L();
-ADXL345 accel = ADXL345();
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 
-Quaternion start;
+#define M_PI (double)(3.14159265358979323846)  //replacement for #include <math.h>
 
-void setup();
+MPU6050_Gyro gyro = MPU6050_Gyro();
+MPU6050_Accelerometer accel = MPU6050_Accelerometer();
+
 void loop();
 
-void setup() {
-    Serial.begin(115200);
+TaskHandle_t xHandleLoop2 = NULL;
+void loop2( void * );
 
-    I2C::init();
-    compass.init();
-    accel.setAxesSwitched('X', 'Y', 'Z');
-    accel.setAxesReversed(false, false, false);
-    accel.init();
+extern "C" void app_main() {
+  I2C::init();
+  wrapper::init();
+  accel.setAxesSwitched('X', 'Y', 'Z');
+  accel.setAxesReversed(false, false, true);
+  accel.init();
+  gyro.setAxesSwitched('X', 'Y', 'Z');
+  gyro.setAxesReversed(false, false, false);
+  gyro.setAccelerometer(&accel);
+  gyro.init();
 
-    Serial.println("Start calibration");
-    compassCalibrate calVal = compass.calibrate();
-    Serial.println("Calibration complete, results:");
-    Serial.print("offset: ");
-    Serial.print(calVal.offset.x);
-    Serial.print(" ");
-    Serial.print(calVal.offset.y);
-    Serial.print(" ");
-    Serial.println(calVal.offset.z);
-    Serial.print("scale: ");
-    Serial.print(calVal.scale.x);
-    Serial.print(" ");
-    Serial.print(calVal.scale.y);
-    Serial.print(" ");
-    Serial.println(calVal.scale.z);
+  vTaskDelay(100 / portTICK_PERIOD_MS);
+  gyro.calibrate(1000);
+  accel.calibrate(1000);
+
+  xTaskCreate(
+    loop2,             // Task function.
+    "gyroLoop",        // String with name of task.
+    10000,             // Stack size in bytes. 
+    NULL,              // Parameter passed as input of the task
+    5,                 // Priority of the task.
+    &xHandleLoop2);             // Task handle.
+
+  while(true){
+    loop();
+  }
 }
 
-void loop(){
+void loop() {
+  Quaternion gyroQuaternion = gyro.getQuaternion();
+  Euler gyroEuler = gyro.getEuler();
+
+  Quaternion accelQuaternion = accel.getQuaternion(gyroEuler.yaw);
+  Euler accelQuaternionEuler = accelQuaternion.getEuler();
+  Euler accelEuler = accel.getEuler();
+
+
+  printf("\tyaw\t\tpitch\t\troll\n");     //print euler angle info
+  printf("\tw\t\tx\t\ty\t\tz\n");         //print quaternion info
+
+  printf("gyro:\t%f\t%f\t%f\n", gyroEuler.yaw * 180/M_PI, gyroEuler.pitch * 180/M_PI, gyroEuler.roll * 180/M_PI);                         //print euler angles
+  printf("gyro:\t%f\t%f\t%f\t%f\n", gyroQuaternion.w, gyroQuaternion.x, gyroQuaternion.y, gyroQuaternion.z);                //print quaternion
+  //printf("gyro:\t%i\t%i\t%i\n", gyro.rawX, gyro.rawY, gyro.rawZ);                                                      //print raw data
+
+  printf("accel:\t%f\t%f\t%f\n", accelQuaternionEuler.yaw * 180/M_PI, accelQuaternionEuler.pitch * 180/M_PI, accelQuaternionEuler.roll * 180/M_PI);                                    //print converted to quaternion and back to Euler
+  printf("accel:\t\t\t%f\t%f\n", accelEuler.pitch * 180/M_PI, accelEuler.roll * 180/M_PI);                                        //print euler angles
+  printf("accel:\t%f\t%f\t%f\t%f\n", accelQuaternion.w, accelQuaternion.x, accelQuaternion.y, accelQuaternion.z);               //print quaternion
+  //printf("accel:\t%i\t%i\t%i\n", accel.rawX, accel.rawY, accel.rawZ);                                                   //print raw data
+
+  printf("-------\n");
+
+  vTaskDelay(1000 / portTICK_PERIOD_MS);
+}
+
+
+
+void loop2( void * parameter ){
+  while(true){
     accel.step();
-    double heading = compass.getYaw(compass.getCorrectedField(accel.getQuaternion(0)));
-
-    Serial.println("----head------");
-    Serial.println(heading *180/PI);
-
-    Euler dirAccel = accel.getQuaternion(0).getEuler();
-
-    Serial.println("---accel-dir----");
-    Serial.print(dirAccel.yaw);
-    Serial.print(" ");
-    Serial.print(dirAccel.pitch);
-    Serial.print(" ");
-    Serial.println(dirAccel.roll);
-
-    /*Euler fieldDir = compass.getFieldDirection().getEuler(); //TODO: getFieldDirection() doesn't work
-
-    Serial.println("---field-dir----");
-    Serial.print(fieldDir.yaw);
-    Serial.print(" ");
-    Serial.print(fieldDir.pitch);
-    Serial.print(" ");
-    Serial.println(fieldDir.roll);*/
-
-    Vector3d field = compass.getField();
-
-    Serial.println("---field----");
-    Serial.print(field.x);
-    Serial.print(" ");
-    Serial.print(field.y);
-    Serial.print(" ");
-    Serial.println(field.z);
-
-    Vector3d correctedfield = compass.correctField(field, accel.getQuaternion(0));
-
-    Serial.println("---corrected-field----");
-    Serial.print(correctedfield.x);
-    Serial.print(" ");
-    Serial.print(correctedfield.y);
-    Serial.print(" ");
-    Serial.println(correctedfield.z);
-
-    delay(250);
+    gyro.step();
+  }
 }

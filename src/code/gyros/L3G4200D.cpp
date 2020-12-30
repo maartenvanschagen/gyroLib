@@ -1,6 +1,5 @@
 #include "gyros/L3G4200D.h"
 
-#include "quaternion.h"
 #include "I2CWrapper.h"
 #include "gyro.h"
 #define M_PI (double)(3.14159265358979323846)  //replacement for #include <math.h>
@@ -9,7 +8,7 @@ void L3G4200D::init(){                                          //TODO: make set
   //change settings
   I2C::writeRegister(GYRO, CTRL_REG2, 0b00100001); //set high pass filter freq to 8Hz
   I2C::writeRegister(GYRO, CTRL_REG3, 0b00000000); //interrups default
-  I2C::writeRegister(GYRO, CTRL_REG4, 0b00010000); //500 dps
+  I2C::writeRegister(GYRO, CTRL_REG4, 0b00010000); //set range 500 degrees per second
   I2C::writeRegister(GYRO, REFERENCE, 0b00000000);
 
   I2C::writeRegister(GYRO, INT1_THS_XH, 0b00000000); //sets thresholds to 100

@@ -56,3 +56,7 @@ void ADXL345::setOffset(Vector3d offset){
   I2C::writeRegister(ACCEL, OFSY, (uint8_t)(offset.y/4));
   I2C::writeRegister(ACCEL, OFSZ, (uint8_t)(offset.z/4));
 }
+
+Vector3d ADXL345::applyOffset(Vector3i raw, Vector3d offset){
+  return raw; //offset is internally applied by ADXL345
+}
